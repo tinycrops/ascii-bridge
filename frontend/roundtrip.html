@@ -1,0 +1,1994 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>The ASCII round trip</title>
+<style>
+      :root{--bg:#0c0e14;--card:#161a23;--line:#262b37;--ink:#e9ebf2;--mut:#9aa1ac;--cyan:#34d0e6}
+      *{box-sizing:border-box} body{background:var(--bg);color:var(--ink);
+        font:15px/1.6 system-ui,sans-serif;margin:0 auto;max-width:1240px;padding:30px}
+      h1{font-size:30px;margin:0 0 6px} .lede{color:var(--mut);max-width:820px;font-size:16px}
+      .flow{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px;color:var(--mut);font-size:14px}
+      .flow b{color:var(--ink)} .flow .ar{color:var(--cyan);font-weight:700}
+      .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:20px;margin:22px 0}
+      .card h2{margin:0 0 14px;font-size:22px}
+      .stage{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--cyan);
+        margin:0 0 8px;font-weight:700}
+      .chain{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:start}
+      .src img,.real img{width:200px;height:200px;object-fit:contain;background:#06070a;
+        border-radius:10px;border:1px solid var(--line)}
+      .real{margin-top:18px} .real img{width:200px;height:auto;max-height:150px}
+      .desc{background:#0b1f24;border:1px solid #16424b;border-radius:10px;padding:12px 14px;
+        color:#cdeef3;font-size:14px;line-height:1.55}
+      .redraws{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
+      .rd{background:#0e1119;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+      .rd img{width:100%;aspect-ratio:1;object-fit:contain;background:#06070a;display:block}
+      .rd .lbl{padding:6px 9px;font-size:12px;font-weight:600}
+      .rd .pill{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+      details summary{cursor:pointer;color:var(--mut);font-size:11px;padding:2px 9px 8px}
+      pre{background:#06070a;color:#7ee0a6;font-size:6.5px;line-height:6.5px;margin:0;
+        padding:8px;max-height:200px;overflow:auto;white-space:pre}
+      .right{display:grid;grid-template-columns:1fr;gap:16px}
+      @media(max-width:780px){.chain{grid-template-columns:1fr}.redraws{grid-template-columns:1fr 1fr}}
+      .foot{color:var(--mut);font-size:13px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
+      a{color:var(--cyan)}
+    </style>
+<h1>The ASCII round trip</h1>
+<p class=lede>Human glyph-art is the one thing in this research line that is <i>authored</i>, not perceived. Here we push it through language and back into glyphs: a model reads a human ASCII drawing and writes a description of what it sees — without being told the subject — and then every model redraws <b>brand-new ASCII from that description alone</b>. The original drawing is never shown to the redrawers.</p>
+<div class=flow><b>human ASCII</b> <span class=ar>→</span> <b>gemini-3.5-flash describes it</b> <span class=ar>→</span> <b>4 models redraw ASCII from the words</b></div>
+<div class=card>
+<h2>Saint Basil&#x27;s Cathedral</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="saint_basils/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                                                                                                       _||_
+                                                                                                       &quot;||&quot;
+                                                                                                        ||
+                                                                                                       /  \
+                                                                                                    .-&#x27;    &#x27;-,
+                                                                                                  .&#x27; o        `.
+                                                                                                  |            |
+                                                                                                  \            /
+                                                                                                   \.--------./
+                                                                                                    L========J
+                                                                                                     L======J
+                                                                                                     J::::::L
+                                                                                                    J /&quot;\/&quot;\|L
+                                                                                                    J|..||.:|L
+                                                                                                     LL  ;()J
+                                                                                                    JJ   ;   L
+                                                                                                    LL   ;   J
+                                                                                                   J|  ; ; ;  L
+                                                                                                   LL  ; ; ;   L
+                                                                                                  JJ  ;  ;  ;  J
+                                                                                                 J J  ;  ;  ;   L
+                                                                                                J J   ;  ;   ;   L
+                                                                                                L | (*)  ;  (*)   L
+                                                                                               J  L      ;         L
+                                                                            _|_               J  L .;..  ;  ,;&#x27;;.  J                                  _|_
+                                                                             |               J  L  | ||  ;  || ||   L                                  |
+                                                                             |              J  J.=.=..=. ; .=._.=:-.L                                  |
+                                                 _|_                         |             J   L| | || |;|| ||| || ||L                                 |
+                                                  |                          |             L___L.=.=.=..;.=._.=._|=.|L____                             |
+                                                  |                         (_)         __J----------&#x27;&#x27;&quot;.-.&quot;&#x27;&#x27;----------/                             (_)
+                                                  |                         J L      .-&#x27;__.L __________.-:-.___________/`-._                          J L
+                                                  |                         |_|        \___.&#x27;         __ |   __        `-._/                          |_|
+                                                 (_)                        J8L         |  .  .--./\.&#x27;  \|..&#x27;  \/\ __   _/                            L J
+                                                 | |                        |8|         | : &#x27;|| _|__|_&quot; |||| &quot;_|__| &quot;| | \                           /L7\\
+                                                 |_|                       /8 8\       |__:  :&#x27;&#x27;_  __ _`,|||.&#x27;  __ `-: |_|_                         /L7\7\\
+                                                 J#L                    ,-8 8  8`-.    |-.\ / /:-&#x27;&#x27;.,&#x27;-: \|/ .-&#x27;.,&#x27;._ `\.-.\                      ,7L7\7\7\/.
+                                                 |#|                 .-&#x27; 8  88  8 8`.,/   \/ // ___&#x27;`___\-&#x27;.|___&#x27;`___&#x27;. |  \\                   ,L7L7\7\7\7\/\.
+                                                /###\              ,8   8  888  88 88 `:___|  .-&quot;_____&quot;-( . ).&#x27;&quot;__&quot;`-. /\_|_|                 .7L7L7\7\7\7\7\/\/.
+                                              ,:######.          ,8   88  8888  888  88 `:J .&#x27; .&#x27;  ., &#x27;-..--..-&#x27;.,&#x27;&#x27;-. \/ |\\                /7L7L7\7\7\7\7\7\/\/\
+                                            .::##:######.      ,88   88   888    888  888 `:  &#x27;.___&#x27;`__// .,\\__&#x27;`____\ \-| ||              /7L7L7L7\7\7\7\7\7\/\/\
+                                         ,.::###::##:####:.. / 88   888   888    888   888  \.-&#x27;&quot; ____`.\ &#x27;`.&#x27; ____  &#x27;.   | ||             /7L7L7\7\7\7\7\7\7\/\/\/\
+                                      ,.:::####::####:####::J 888   888   888    888    888  L .&#x27;&quot;.--.`. :;;:.&#x27;.=..&#x27;-. &#x27;\(_)_\            {7L7L7\7\7\7\7\7\7\7\/\/\/}
+                                    ,:::#####:::#####:#####:| 888   888   888    888    888  |/  ( * )) |/__\_( * ))  \  J L\_\           {L7L7L7\7\7\7\7\7\7\7\/\/\}
+                                   /:######::::#####::#####:| 888   888   888    888    888 8|----`--&#x27;&#x27;&#x27;_______&#x27;--&#x27;------|_|.| |          {7L7L7\7\7\7\7\7\7\7\/\/\/}
+                                  J:#####::::######:::#####:J 888   888   888    888    888 8L&#x27;#&#x27;#&#x27;#&#x27;#&#x27;#_#_#_#_#&#x27;#&#x27;#&#x27;#&#x27;#&#x27;| |._`-.          \7L7L7\7\7\7\7\7\7\7\/\/\/
+                                  |:####::::######:::####|:::\ 888   888  8888  8888  8888 8/__________.-,--,--.________/.&#x27;.\ &#x27;-.:&gt;     _|_ :7-&quot;&quot;&quot;&quot;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&quot;&quot;&quot;&quot;--\:
+                                  |####::::######::::###=|=::#&#x27;:888;;;;;;;;;;;;;;;;;;;88888:            :[__]          /&#x27;.&#x27;.&#x27;\  /        |   L  J_/\/\/\__/\/\/\__L
+                                  J####:::######::::#####|:::###&#x27;:--&quot;H&quot;H&quot;H&quot;H&quot;&quot;H&quot;H&quot;H&quot;H&quot;--./_L  .    .    :J__L .  .  . /&#x27;.&#x27;.&#x27;.&#x27;\|         ()  J.-&#x27;L[][][]  [][][]&#x27;J
+                                   \###:::#####::::#####( ):####:/|&quot;&quot;&quot;n&quot;n&quot;n&quot;n&quot;&quot;n&quot;n&quot;n&quot;&quot;&quot;|[__]   :   ::   :[__]:  :  :.&#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27;._       ||   L.-|--------------.|
+                                    `##::#####::::######J:L####:&#x27;  \.=================.|J__L   : .-::   :J__L:  :.&#x27;&#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27;&#x27;._    ||   | .|   ||     || | |
+                                      \;&#x27;&#x27;####:::#######/\\##;&#x27;    |    ::      ::    ::[__]   :/ __\   :[__]:.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; `. /  \  | ||   ||     || | |
+                                      \`=============_.&#x27;\/\`;_     |    ||      ||    ||J__L|  :|||8|   :J__L/ &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; \    \ | ||   ||     || | |
+                                       |.==.==.==. .&#x27;\/\/\/\/\&#x27;.   | .  ||  ..  ||  . ||[__]   :|||8|   :[__L .&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;. |  __\|__|___||..___|&#x27;&quot;`./&quot;&quot;\
+                                       \========= //\/\/\/\/\/\/\ / / \ || /  \ || / \||J__L   :|||8| ...J__L&#x27;. .&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;. .&#x27; / `.//   \ //   \\ || _\|   |
+                                       /___.-..--|/\/\/\/\/\/\/\// /   \||/    \||/   \|[__]_:::|||8|::::[__]\.&#x27;. .&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;.&#x27; &#x27;. .&#x27;./     ||_..-`-._---||  _____`-&#x27;---.
+                                      J  |   ||  J\/\/\/\/\/\/\/:=====.  .=======. .==.-----------------------`..&#x27;._.&#x27;_&#x27;.&#x27;_&#x27;.&#x27;_&#x27;._.&#x27;..&#x27;  -.  .&#x27;.&#x27;.-&#x27;&#x27;-.`. / .&#x27;.-&#x27;&#x27;-.&quot;&#x27;.  /\
+                                      |  |   ||   `./\/\/\/\/\/// .-. \\//  .--. \\// \\\  \  /\  /\  /\ | :| /\::..=============..::  .&#x27;  &#x27;/ / /  (o) `.\ / /  (o) `. \ |||
+                                      L  &#x27;   ||    =:=========:||_&#x27;-&#x27;__|||__&#x27;--&#x27;__||_::|||_| /[]\/[]\/[]\| :|/[]\\___.-----------._/   :    |_|_|_______|||||_________||_|||
+                                     /       &#x27;&#x27;   ( _________.-&#x27;\_________________________&#x27;&#x27;|_===========| :|====||   ||     ||   |  __:-&#x27;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;::.
+                                 -|-J__    ____    |__.____._\.-&#x27;\_______________________ &#x27;-./---.-----.-------.-||   ||     ||   |-&#x27;     :  .-.  .-. .-.  .-.  .-. .-.    /
+                                  | |  &#x27;..&#x27;    &#x27;.  |  |    |  \ _.\---JL---------JL---.__;-.:  .&#x27; &#x27;. .&#x27; &#x27;.   .&#x27; &#x27;|| __||_____||___|    &#x27;:  :   :    :   :    :    :   :   |
+                                  |J    |_______|__|  |    |  |L .| .-LJ--.| |.--LJ--.| ,_ | -:-.---&#x27;-.-.-&#x27;-&#x27;.-.-::&#x27;&#x27;&#x27;_________&#x27;&#x27;&#x27;:  &#x27;:   _:----------------------------./
+                                 ()_.--&#x27;___________|__|____|__||&quot;|| |J  L || || J  L || | || /   \ __/   \  /   \/.-&#x27;&#x27;___      __&#x27;.\   ,-&#x27;  ___          ___          __ `.
+       .::.::                    ||.---&#x27; ________ /___________|J || |L  J || || L  J || | ||--.   |  |   |  |  / &#x27;. .&#x27;   &#x27;.  .&#x27;  &#x27;. .&#x27;\ _  | . |   J:   |   |   ::   |  ||
+       .::::::                  J  L.---&#x27;__.____ /  __   .   .| L|| J    L|| ||J    L|| | JL  |   |==|   |==| |   ||______|_|___.__||  ||| | O |   L :  |   |  J  :  |  ||
+     :::::::::                 /:#:#\     / \  `&#x27;..&#x27;  &#x27;,      L=||| L.==.J|| ||L.===J|| | ||==|   |__|___|__| |.-.&#x27;-.    .--&#x27;-. O  .-;-||| | O |  J   : |   |  L   : |  ||
+     ::;:::::::  ..          ,#:##:#:\   /   \   : .    |   .|J|J||J ||8||L| |L || ||L| | LJ--|   |  .---.   |/.&#x27;    &#x27;..&#x27;      &#x27;O |   \ || |/ \|  L () :|___|_J ()  :|__||
+     :::::::::;:::&#x27;&#x27;       .:#:##::#:#`./_____\.-&#x27;-. ..-&#x27;---.||| L|L ||8||J| J  || ||J| |J  L |___|  &#x27;---&#x27;   /-&#x27;------&#x27;--------/ \&#x27;----&#x27;&#x27;&#x27;-|(_)--J .--. :     L.==. :   |J
+     ::::::::::::        .:##:###:##::#:\    .&#x27; .   :    .  \|L| |J  ||8|| L L  || || L |J  |_______________|  `.  .&#x27; .8. `.   (_)&#x27;&#x27;. .&#x27;.   /|L  L |mm|  ; . J | :|. ;  J L
+     ::;::::::::::      |:###:###:###:##:|.  :  .---:--.   __|L| JL  ||8|| JJ   || || J ||  J      .        |   |//   :8:   `./:L|J  || |  /L|J J  |88|  :   L | :|   : | |
+     ::::;::::::&#x27;&#x27;      |:###:###:###:##:|   |.&#x27;.&#x27;&quot;| |&quot;.\.&#x27;  _L|_J___||8||_JL___||_||__L_L__|_______________/__.:::___:_:____/:J:|:L-&#x27;&#x27;-| /J:|:\L  |88|   : J  | :| .  :L J
+     :::;::::::::.....   \:##:###:###:#:::   |||   | |  ||  | :  . : .     :     .  :     |            .                    /::L:|:J\    /:L:|::L__|88|____:L__|_:|____:|  L
+     ::::;:::::::::::::   ;--------....::::__||| __|_|_|||  |.-&#x27;.--:-------:--------:-----|--._____________________________/::J::|::J\_ /:J::|::JJ--------------------------|
+     ::::::::::;:::::::::::7______::::::::;:----&#x27;_____./.-. |   :  : .     :   .    :   . |  .                      .     /:::L::|::;L\/::L::|:::LL------------------------:-\
+     ::::::::::::::::::;::|_______:::;::::;;:--------||(_  )|.--:--:-------:--------:---.&#x27;-----,--,---,---,--,---,----,-./:::J:::|::::J\:J:::|:::J:\_________._____________:_/
+     :::::::::::;:::::::::|______::::::;:;::::_______| `-V&#x27;&#x27;| __:__:_______:________:__/     ,&#x27; ,&#x27;  ,&#x27;  ,&#x27; ,&#x27;  .&#x27;   ,&#x27;  /::::L:::|:::::L\L:::|::::L:L&quot;&#x27;--._----------------:|
+     :;:::::::::::::::::::::___   ::;::::::::--------|   &#x27; )|&#x27;( )  .--.    |          /____.&#x27;_.&#x27;__.&#x27;__.&#x27;--&#x27;---&#x27;---,;   /::::J::::|::::::\\:::|::::J:J  &#x27; . J__   &#x27;    .    : \
+     ::::::::::::::::::::::::::_::::::;::::.::::______\ __/___} {  { .|.___|_________/     ____    _____  : : : : : `./:::::L::::|:::::::\\&quot;&quot;&#x27;&quot;&quot;&quot;:;L;L  .  L  &#x27;-.______ ---;-|_
+     :::;:;:::::::::;;:::::::::::::;::::::::;:  .-.-. /&#x27;  `\__:&quot;:--&#x27;; \ \  |   ___ : ____/ .---.\/ .---.\======-.___.;;;;;;J;;;;;|;;;;;;;;\\ .  &#x27;   .  _  J     |      |       |&quot;-.
+     :::::::::::::::::::;::::::::::::::::;::::: | | | |     \ | |/-.   \ \ |--/   \--/____/     | |     |====_.-&#x27;&#x27;&#x27; .  .      &#x27;        .     ___  .  .&#x27; `-|     |--/&quot;\-|--/&quot;\--|..|
+     ::::::::::::::::::::::::::;:::;:::::::::   | | | |    _.\| || |`--|| ||  |   |  |    |     | |     |=====\-----------------------------&#x27;   `-..&#x27;  .-.|_____|  |:| |  |:|  |||/
+     ::::::::::::::::::::::::::::::::::;::::____|_|_|_|_.-&#x27;\ |;-&#x27; .&#x27;   ||_|_--&#x27;---&#x27;--&#x27;----&#x27;-----&#x27;-&#x27;-----&#x27;-___-\  |           __        |  |  .--&#x27;___   |8||    |`--&#x27;-&#x27;-&#x27;--&#x27;-&#x27;--|__|
+     ::::::::::;:::::;:;:;:::::;:::::::::::::.&quot;| |&quot;&quot;| J /   L ) .&#x27;    .&#x27; __ `. |&quot;&quot;|:;:|&quot;&quot;| |&quot;&quot;||&quot;&quot;&quot;||&quot;&quot;&quot;||  || | |    _.--&#x27;&#x27;|  |&#x27;&#x27;--.  |  |  |  | . `- |8||    ||&quot;:&quot;||&quot;:&quot;||&quot;:&quot;||../
+     :::::::::::::::::::::::;::::::::;::;::::::. |__| | L .&#x27;\ \(._  &lt;|  (  )  ||__|:;:|__| |__||___||___|&#x27;--&#x27;| |-|--.&#x27;  ___ |__| ____`.|--|--|  |------|8||___ ||_:_||_:_||_:_|||||
+     :;:::::::::::;::;::::::::::;:::::::::::::::______|.:&quot; .&#x27;) \  &#x27;-. \  &quot;&quot;  /_..._______.._...._______________|-|--| .:::::.  .d8888b.|--|--|__|======|8||   /----------------|.-/
+     ::::::::::::::::::::::;::::::;::::::::;::::.   .--&quot;-&quot;&quot;--`---&#x27;---`-`----;::::;::::;::::::::::::____________/-&#x27;--&#x27;-\:::::(__)888888Y---&#x27;--\  |      |8||..:_________________|__|
+     :::::::::::::::::::::::::::::::::::::::::::::/&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;\:::::::::::::::::::;:::::---------\_____ /::::::\/8888888\______|  |      |8|| |        .     . :|  :|
+     :::::::;::::;:::;::::;;::::::::;::::::::::::&#x27;=:=======================:=&#x27;:::::::::;::::::::;::::::        \______/::::::/88888888\______/__|      |8|| |  .        .    :|  :|
+     :::::;::::::::::::::::::::::::::::::;:::::::::|   _________________   |::;::::::::::::::::::::;::::.______|/  \| |::::::|888888888|/ \| |  |      |8|| |     &#x27;  ..      :|| :|
+     ::::::;:::::;:::::::::::::::::;:::::::::;:::::|  |  o o   o      o/|  |::::::;::::::::;:::::;::::::::_____||__||_|::::::|888Y_____||_||_|  |__..--|8|| |        ||   .  :|| :|
+     ::::::::::::::::::::;::::::::;::::::::::::;:::|  |  |-|\ /|  o, /| |  |::::::::;:::;:::::::::::::::::     &lt;======&gt;------|8Y______&lt;======&gt;--|__..--|8|| |  .     &#x27;&#x27;      :|| :|
+     :::::::::;::;::::::;:::::::::::::::::::;::::::|  |  | |  /7   |\ /\|  |::;:::::::;;:::;::;::;::::::::     ||  |  |::::::|_________||  | |  |      |8|| |     .      .   :|  :|
+     ::::::::::::::::::::::::::::::::::;:::::::::::|__|_/__|_/_|__/_|_\||__| \_:::::::::::::::::::::;:::|      ||__|  |::::::|_________||__| |  |      ;:&quot;|_|_______________::|_::|
+     :::::;;;::::::::::;::::::::::;::;::::::::::::/                         \   \:::::::::;:;:::::::    |_____/_______\::::::\________/_______\  \   __..-|-|-|-|-|-|-|-|-|-|-|-|-|
+     :::l42:::::::::::::::::::::::::::::::::;::::|___________________________|    \/ ::::::;:::::::     |_____|       |::::::|________|       |  |-&#x27;&#x27; __..;;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;|
+     ::::::::::::::::::::::::::::::::::;:::::::::|      |&quot;&quot;|                 |      \:::;::::::::      /      |_______|::::::|________|_______|__|_.-&#x27;    .  .&#x27;,,,,,,..,,,,;,..,.;|...,,,,,..
+     :::::|&quot;&quot;|::::::::::::::|&quot;&quot;|:::::::::::::::::|______|  |_________________|________\\|&quot;&quot;|_/_________|______[_______]:;;;;;;|&quot;|;;;;;::::||;;;||&#x27;&#x27;&#x27;||IIIIIII||IIIIII||IIIIII||IIIII||IIIII||
+     TTTTT|  |TTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTT||  ||  ||IIIII| |IIIIIIIII||===||===||IIIIIII||IIIIII||IIIIII||IIIII||IIIII||
+     TTTTT|  |TTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTTTTTTTTTTT|  |TTTTTTTTTTTTTTTTTTT||==||==||IIIII| |IIIIIIIII||___||___||IIIIIII||&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+     TTTTT|__|TTTTTTTTTTTTTT|__|TTTTTTTTTTTTTTTTTTTTTTT[____]TTTTTTTTTTTTTTTTTTTTTTTTTTT|__|TTTTTTTTTTTTTTTTTTT||__||__||==&#x27;&#x27;&#x27;&#x27;&quot;&quot;&quot;                    .                 .              .    .
+
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="saint_basils/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>The majestic Saint Basil&#x27;s Cathedral stands illuminated against a pitch-black night sky, showcasing its complex, multi-tiered Russian Byzantine architecture and iconic onion-shaped domes. A towering central spire rises to a sharp point, capped with a delicate golden dome and an Orthodox cross. Surrounding this central tower are several smaller, asymmetrical towers, each topped with a distinctively textured onion dome: one displays a bold, swirling spiral pattern, another features a deeply faceted chevron texture, and a third is adorned with clean vertical ribs. Below the domes, the cathedral&#x27;s facade is a dense, intricate arrangement of arched windows, decorative niches, corbelled cornices, and brick tiers. The materials consist of rugged red brick and smooth white limestone trim, creating a highly textured surface of contrasting tones. Dramatic, low-angle lighting casts sharp highlights along the edges of the stone carvings and deep shadows within the recessed arches, emphasizing the immense sculptural depth of the monument.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/saint_basils/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>+
+                              |
+                             /#\
+                            /###\
+                           /#####\
+                          /###|###\
+                         /####|####\
+                        /#####|#####\
+                       /######|######\
+                      /#######|#######\
+                     /########|########\
+                    /#########|#########\
+                   /##########|##########\
+                  /###########|###########\
+                 /############|############\
+                /#############|#############\
+               /##############|##############\
+              /###############|###############\
+             /################|################\
+            /#################|#################\
+           /##################|##################\
+          /###################|###################\
+         /####################|####################\
+        /#####################|#####################\
+       /######################|######################\
+      /#######################|#######################\
+     /########################|########################\
+    /#########################|#########################\
+   /###########/\###########/\|/\###########/\###########\
+  /###########/  \###########/ \ \###########/  \###########\
+ /___________/____\_________/___\_\_________/____\___________\
+ |   _.-._      _.._        _.._      _.._      _.-._       |
+ |  /_/ \_\    /_/\_\      /_/\_\    /_/\_\    /_/ \_\      |
+ |  \_\_/_/    \_\/_/      \_\/_/    \_\/_/    \_\_/_/      |
+ |   /   \      /  \        /  \      /  \      /   \       |
+ |  /_._._\    /_.._\      /_.._\    /_.._\    /_._._\      |
+ | [__[]__]   [__[]__]    [__[]__]  [__[]__]  [__[]__]      |
+ |  |  _  |    |  _  |      |  _  |    |  _  |    |  _  |   |
+ |__|_|_|_|____|_|_|_|______|_|_|_|____|_|_|_|____|_|_|_|___| |
+ |__|_|_|_|____|_|_|_|______|_|_|_|____|_|_|_|____|_|_|_|___| |
+ |  |_|_|_|    |_|_|_|      |_|_|_|    |_|_|_|    |_|_|_|    |
+ |___|___|______|___|________|___|______|___|______|___|_____|</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/saint_basils/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>+
+                                  /|\
+                                 /_|_\
+                                  / \
+                                 /___\
+                                .-^-.
+                               /_/ \_\
+                              /_/___\_\
+                                 | |
+                       .-~~-.    | |    .-~~-.
+                     .&#x27;/_\/_\&#x27;.  | |  .&#x27;/_\/_\&#x27;.
+                    /_/  /\  \_\ | | /_/\/\/\_\ 
+                    \ \ /  \ / / | | \ \_/\_/ /
+                 .-~~\.&#x27;----&#x27;./~~-.-.-.~~\.__./~~-.
+               .&#x27;_/\_  .-==-.  _/\_/ \_/\_  _/\_   &#x27;.
+              /_/\/\/\/_/\/\_\/_/\/| |\/\_\_/\/\/\_\  \
+              \_\_/\_/\_\__/\/\_/\_| |_\_/\_/\_/\_/_/ /
+                  ||      .----.      | |      ||
+             .----||----./_====_\-----| |------||----.
+           .&#x27;_____|_____/|  __  |\____| |______|_____ &#x27;.
+          /|  _  _  _  | | /  \ | |   | |   |  _  _  |\
+         /_| |_| |_| |_| || () || |[] | | []| |_| |_|_|_\
+        /__    __    __  ||____|| |   | |   |  __    __ _\
+       /___|__|__|__|__|_/|____|\_|___|_|___|_|__|__|__|__\
+       |   .--.   .--.   /  _  _   _   _   _   .--.   .--.|
+       |  /_[]_\ /_[]_\ /| |_| || |_| |_| || |\_[]_\ /_[]_\|
+       |  |    | |    |/ |  _  ||  _   _  || | |    | |    ||
+       |  |[]  | | [] |  | |_| || |_| |_| || | | [] | | [] ||
+       |  |    | |    |  |  _  ||  _   _  || | |    | |    ||
+     __|__|____|_|____|__|_| |_||_| |_| |_||_|_|____|_|____|__
+   .&#x27;   _   _   _   _   _   _   _   _   _   _   _   _      &#x27;.
+  /___/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_______\
+  |   ___    ___    ___    ___    ___    ___    ___       |
+  |  / _ \  / _ \  / _ \  / _ \  / _ \  / _ \  / _ \      |
+  | | (_) || (_) || (_) || (_) || (_) || (_) || (_) |     |
+  |  \___/  \___/  \___/  \___/  \___/  \___/  \___/      |
+  |    _..__..__..__..__..__..__..__..__..__.._           |
+  | .-&#x27;  _   _   _   _   _   _   _   _   _   _ &#x27;-.       |
+  |/___./ \./ \./ \./ \./ \./ \./ \./ \./ \./ \.___\      |
+  ||   |[]| |[]| |[]| |[]| |[]| |[]| |[]| |[]| |   ||     |
+ _||___|__|_|__|_|__|_|__|_|__|_|__|_|__|_|__|_|___||_
+/_________________________________________________________\</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/saint_basils/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>+
+                                    _|_
+                                   ( I )
+                                    \ /
+                                     |
+                                    / \
+                                   /   \
+                                  /  |  \
+                                 /   |   \
+                                /    |    \
+                               /     |     \
+                    +         /______|_______\         +
+                   _|_        |   [ ]  [ ]  [ ]   |       _|_
+                 .-&#x27; &#x27;.-&#x27;     |    _    _    _    |      .-&#x27; &#x27;.-&#x27;
+                /  /  /  \    |   | |  | |  | |   |     /  v  v  v  \
+               | | | | | |    |   |_|  |_|  |_|   |    | v v v v |
+     +         \  \  \  \  /  |                   |   \ v v v /          +
+    _|_        &#x27;-._____.-&#x27;    |    _    _    _    |   &#x27;-._____.-&#x27;       _|_
+   ( | )        |     |       |   | |  | |  | |   |     |     |       ( | )
+  /| | |\       /       \     |   |_|  |_|  |_|   |    /       \      /| | |\
+ | | | | |     |  [ ] [ ]  |  |                   |  |  [ ] [ ]  |     | | | | |
+  \| | |/      |   _   _   |  |    _   _   _    |  |   _   _   |      \| | |/
+   &#x27;---&#x27;       |  | | | |  |  |   | | | | | |   |  |  | | | |  |       &#x27;---&#x27;
+  /=====\     /=============\  /=================\  /=============\     /=====\
+  |  o  |     |  o   o   o  |  |   o   o   o   o   |  |  o   o   o  |     |  o  |
+ /============================================================================\
+| _  _  _    _  _  _  _  _   _  _  _  _  _  _  _   _  _  _  _  _    _  _  _  |
+|| || || |   | || || || || | | || || || || || || | | || || || || |   | || || |
+||_||_||_|   |_||_||_||_||_| |_||_||_||_||_||_||_| |_||_||_||_||_|   |_||_||_||
+|=============================================================================|
+||___|___|___|    .-------.   |___|   .-------------.   |___|   .-------.    |___|___|___||
+||:::|:::|:::| /         \|:::|/               \|:::|/         \ |:::|:::|:::||
+||___|___|___| |         ||___||               ||___||         | |___|___|___||
+||:::|:::|:::| |   [ ]   ||:::||    /=====\    ||:::||   [ ]   | |:::|:::|:::||
+||___|___|___| |   | |   ||___||   /   I   \   ||___||   | |   | |___|___|___||
+||:::|:::|:::| |   |_|   ||:::||   |   I   |   ||:::||   |_|   | |:::|:::|:::||
+|=============================================================================|
+###############################################################################</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/saint_basils/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>|
+                                    -+-
+                                     |
+                                    -/-
+                                     |
+                                    (o)
+                                    / \
+                                   /::.\
+                                  /::::.#\
+                                 /::::::.##\
+               |                /::::::::.###\                 |
+              -+-              /:::::::::.####\               -+-
+              -/-             |::::::::::.#####|              -/-
+              _O_             |::::_:::::.::_##|              _A_
+             / . \            |:::/_\::::.:/_\#|             / # \
+            /./.%.\           |:::| |::::.:| |#|            /#^#^#\
+           (././.%\)           \:::::::::.####/            (#&lt;#&gt;###)
+            \.\.%\/            /::::(O)::.(O)##\            \##V##/
+             \___/            |:::::/_\::./_\###|            \___/
+             |::::|            \:::::::::.#####/             |###|
+            /::::::\            \::::::::.####/             /#####\
+           /::::::::\                 |                    /#######\
+          |:::[__]:::%|              -+-                  |###[__]####|
+          |::: || :::%|              -/-                  |### || ####|
+          |:::_||_:::%|              _o_                  |###_||_####|
+          |::::::::::%|             / | \                 |###########|
+           \:::::::::%/            /| | |\                 \#########/
+            |:::::::|             /|| | ||\                 |#######|
+            |:::::::|            (||| | |||)                |#######|
+            |:::::::|             \|| | ||/                 |#######|
+      ______|:::::::|______________\_|||_/__________________|#######|______
+     /::::::|:::::::|:::::::::::::::|::::|::::::::::::::::::|#######|######\
+    /:::::::|:::::::|::::::::::::::/::::::\:::::::::::::::::|#######|#######\
+   |::::::::|:::::::|:::::::::::::|::[__]::|::::::::::::::::|#######|########|
+   |::[__]::|:::::::|:::[__]::::::|:: || ::|::::[__]::::::::|#######|::[__]##|
+   |:: || ::|:::::::|::::||:::::::|::_||_::|:::::||:::::::::|#######|:: || ##|
+   |::_||_::\:::::::/::::_||_:::::|::::::::|::::_||_::::::::\#######/::_||_##|
+   |:::::::::\:::::/::::::::::::::|::::::::|:::::::::::::::::\#####/#########|
+   |==========|:::|================\::::::/===================|###|==========|
+   |::::::::::|:::|::::::::::::::::|::::::|:::::::::::::::::::|###|::::::::::|</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Tower Bridge</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="tower_bridge/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>              Y                                          v
+              I                                          I
+             /~\                                        /~\
+            /~~~\                                      /~~~\
+           /~~~~~\                                    /~~~~~\
+         ()~~~~(X)\                                 &#x27;/~~~~(X)\ A
+         /\~A~~/ \~\A                             A ()~A~~/ \_/ \
+       /\||/ \_| |_/ \___________________________/_\/\/ \-    ! !
+       !!  ! !     ! !________________________________! !     ! !
+       !!_.! !....-! !                                ! !..-&#x27;&#x27;! ! =.
+      .!! .! !     ! !------------------------------- ! !     ! ! |=.
+    .= !.&#x27; ! !....-! !                           ! !..! !...-&#x27; V=.| =.
+  .= | ./  \ /     ! !                            V    V       H =.  =..
+.=   .=I    V       V                             I    H       H  |=.  |=.
+|  .=| I_...H.....--H     /----/      \----\      I_...H....-&#x27;&#x27;H  | |=.| |
+..=| | I    H       H    /    //       \ `  \\    I    H       H  | |  =.
+&#x27;  | | I    H       H  ./    //         \ `  \\.  I    H       H  | |  | &#x27;
+|  | | I    H       H /    .//           \ `  \ \ I    H       H  | |  | |
+|  | | I_...H......-H/    / /             \ `  \ \._...H.....-&#x27;H  | |  | |
+|  | | I    H       H   ./ /               \ `  \  \   H       H    |    |
+|  | | I    H       H  /  /                 \ `  \  \..H-------H---+------
+___|___I___ H_______H_/  /                   \ `  \  .-Y-----------+------
+________]  Y          | /                     \ `      I  .&#x27;&#x27;&#x27;&#x27;&#x27;.  |
+    |      I   .&#x27;&#x27;&#x27;&#x27;&#x27;. /                       \       I (       ) |
+    |      I  (       )                         \      I |   Y   | |
+    |      I  |   Y   |                         |      I |   :   | |
+    |      I  |   :   |                         |      I |   :   | |Meph.
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="tower_bridge/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A grand, twin-towered Victorian Gothic bascule bridge, resembling London&#x27;s Tower Bridge, stands majestically against a pitch-black night sky with its central drawbridge spans raised. The two massive stone towers are highly symmetrical, constructed from light-grey, weathered granite with ornate architectural detailing, each culminating in a steeply pitched, pyramidal roof topped with a sharp finial spire. Two parallel, horizontal steel walkways connect the towers near their summits, spanning the wide gap high above the river. From the inner sides of the towers, the two massive leaves of the drawbridge are raised diagonally upwards, creating an open passage in the center of the span. At the base of each tower, a dark, arched portal sits at the water level, leading into the stone foundations. The scene is captured in dramatic, high-contrast night lighting that sharply highlights the bridge&#x27;s white stone edges, spires, and horizontal beams, casting the rest of the structure in deep shadow against the absolute darkness.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/tower_bridge/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>/\                            /\
+                          /  \                          /  \
+                         /____\                        /____\
+                         |||| ||======================|| ||||
+                         |||| ||======================|| ||||
+                         |||| ||                      || ||||
+                        _||||_||_                    _||_||||_
+                       /      __ \                  / __      \
+                      /      /  \ \                / /  \      \
+                     /______|    |_\______________/_|    |______\
+                     |      /      \              /      \      |
+                     |     /  ____  \            /  ____  \     |
+                     |    /  /    \  \          /  /    \  \    |
+                     |   /__/      \__\        /__/      \__\   |
+                     |   |            |        |            |   |
+                     |   |   ____     |        |     ____   |   |
+                     |   |  |    |    |        |    |    |  |   |
+                     |   |  |____|    |        |    |____|  |   |
+                     |   |            |        |            |   |
+                     |   |____________|        |____________|   |
+                     |    \          /          \          /    |
+                     |     \        /            \        /     |
+                     |      \      /              \      /      |
+                     |       \    /                \    /       |
+                    _|_________\__/__________________\__/________|_
+                   /                                                   \
+~~~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~ /                                                           \ ~~~~~~~~~~~~~
+~~~~~~~~~~~~~~ /                                                             \ ~~~~~~~~~~~~
+~~~~~~~~~~~~~ /                                                               \ ~~~~~~~~~~~
+~~~~~~~~~~~~ /                                                                 \ ~~~~~~~~~~
+~~~~~~~~~~~  /                                                                   \  ~~~~~~~~
+~~~~~~~~~~  /                                                                     \  ~~~~~~~
+~~~~~~~~~  /                                                                       \  ~~~~~~
+~~~~~~~~  /                                                                         \  ~~~~~
+~~~~~~~  /                                                                           \  ~~~~
+~~~~~~  /                                                                             \  ~~~
+~~~~~  /                                                                               \ ~~~
+~~~~  /                                                                                 \ ~~~
+~~~  /                                                                                   \ ~~</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/tower_bridge/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>^                               ^
+                                  / \_____________________________/ \
+                                 /   _____________________________   \
+                                /   /                             \   \
+                               /___/_______________________________\___\
+                               |   |                               |   |
+                               |   |===============================|   |
+                               |   |                               |   |
+                               |   |===============================|   |
+                              /|   |                               |   |\
+                             /_|___|_______________________________|___|_\
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   |                               |   |  |
+                            |  |   \                               /   |  |
+                            |  |    \                             /    |  |
+                            |  |     \                           /     |  |
+                            |  |      \                         /      |  |
+                            |  |       \                       /       |  |
+                            |  |        \                     /        |  |
+                            |  |         \                   /         |  |
+                            |  |          \                 /          |  |
+                            |  |           \               /           |  |
+                            |  |            \             /            |  |
+                            |  |             \           /             |  |
+                            |  |              \         /              |  |
+                            |  |               \       /               |  |
+                            |  |                \     /                |  |
+                            |  |                 \   /                 |  |
+                            |  |                  \ /                  |  |
+                            |  |                 _/ \_                 |  |
+                           _|__|_              _/     \_              _|__|_
+                         .`      `.          .`         `.          .`      `.
+                        /  .----.  \        /   .---.    \        /  .----.  \
+                       /__/      \__\      /___/     \____\      /__/      \__\</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/tower_bridge/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>*                                                               *
+                     |                                         |
+                    / \                   .                   / \
+                   /   \                                     /   \
+             .    /  *  \                                   /  *  \    .
+                 /       \                                 /       \
+  *             /_________\                               /_________\             *
+                |  _   _  |                               |  _   _  |
+                | [ ] [ ] |===============================| [ ] [ ] |
+                |         ||/\|/\|/\|/\|/\|/\|/\|/\|/\|/\||         |
+               \|_________|===============================|_________|/
+              \ |  _   _  |                               |  _   _  | /
+             \  | [ ] [ ] |                               | [ ] [ ] |  /
+            \   |         |                               |         |   /
+           \|   |  _____  |                               |  _____  |   |/
+          \ |   | |  _  | |            //   \\            | |  _  | |   | /
+         \  |   | | |_| | |           //     \\           | | |_| | |   |  /
+        \   |   | |     | |          //       \\          | |     | |   |   /
+       \ |  |   | |_____| |         //         \\         | |_____| |   |  |/
+      \  |  |   |  _   _  |        //           \\        |  _   _  |   |  |  /
+     \   |  |   | | | | | |       //             \\       | | | | | |   |  |   /
+    \    |  |   | |_| |_| |      //               \\      | |_| |_| |   |  |    /
+   \ |   |  |   |         |     //                 \\     |         |   |  |  |/
+  \_|   |  |   |  _____  |    //                   \\    |  _____  |   |  |  |_/
+ \_ |   |  |   | /     \ |   //                     \\   | /     \ |   |  |  | _/
+\__ |   |  |   | |     | |  //                       \\  | |     | |   |  |  | __/
+    |   |  |   | |     | | //                         \\ | |     | |   |  |  |
+================| |     | |//                           \\| |     | |================
+                | |     | |                               | |     | |
+               /=============\                         /=============\
+              /  [=] [=] [=]  \                       /  [=] [=] [=]  \
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~      ~        ~        ~       ~         ~        ~        ~        ~      ~</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/tower_bridge/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>. | .                                           . | .                                          
+                                         -+-+-+-                                         -+-+-+-                                         
+                                         /  |  \                                         /  |  \                                         
+                                        /   |   \                                       /   |   \                                        
+                                     . /====|====\ .                                 . /====|====\ .                                     
+                                    -+-/    |    \-+-                               -+-/    |    \-+-                                    
+                                    /_\     |     /_\                               /_\     |     /_\                                    
+                                   /___|____|____|___\                             /___|____|____|___\                                   
+                                   | |               | |                           | |               | |                                 
+                                   | |   _       _   | |                           | |   _       _   | |                                 
+                                   | |  | |     | |  | |                           | |  | |     | |  | |                                 
+                                   | |  |_|     |_|  | |                           | |  |_|     |_|  | |                                 
+                                   | |               | |                           | |               | |                                 
+                                   |___________________|                           |___________________|                                 
+                                   [___________________]===========================[___________________]                                  
+                                   |                   |:::::::::::::::::::::::::::|                   |                                 
+                                   [___________________]===========================[___________________]                                 
+                                   | |               | |                           | |               | |                                 
+                                .  | |   _       _   | |                           | |   _       _   | |  .                              
+                              .&#x27;   | |  | |     | |  | |                           | |  | |     | |  | |   `.                            
+                           .&#x27; |    | |  |_|     |_|  | |                           | |  |_|     |_|  | |    | `.                         
+                        .&#x27;    |    | |               | |                           | |               | |    |    `.                      
+                     .&#x27; |     |    | |               | |             .             | |               | |    |     | `.                   
+                  .&#x27;    |     |    | |               | |           // \\           | |               | |    |     |    `.                
+                .&#x27;|     |     |    | |               | |         ///   \\\         | |               | |    |     |     |`.              
+                  |     |     |    | |               | |       ///       \\\       | |               | |    |     |     |                
+                  |     |     |    | |               | |     ///           \\\     | |               | |    |     |     |                
+                  |     |     |    | |               | |   ///               \\\   | |               | |    |     |     |                
+                  |     |     |    | |               | | ///                   \\\ | |               | |    |     |     |                
+                ==|=====|=====|==  _|_|_______________|_|_///                     \\\_|_|_______________|_|_  ==|=====|=====|==          
+                                   | |               | |                           | |               | |                                 
+                                   | |               | |                           | |               | |                                 
+                                   | |      ___      | |                           | |      ___      | |                                 
+                                   | |    .&quot;   &quot;.    | |                           | |    .&quot;   &quot;.    | |                                 
+                                   | |   /       \   | |                           | |   /       \   | |                                 
+                                   | |  |         |  | |                           | |  |         |  | |                                 
+                                   |_|__|_________|__|_|                           |_|__|_________|__|_|                                 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Space Needle</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="space_needle/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                   *
+                   :
+                   |
+                   |
+                   |
+                  :|:
+                  |||
+             _____|||_____
+            /=============\
+        ---&lt;~~~~~~~~~~~~~~~&gt;---
+            \-------------/
+             \___________/
+               \||:::||/
+                ||:::||
+                ||:::||
+                ||:::||
+                ||ooo||
+                ||___||
+                ||:::||
+                ||:::||
+                ||:::||
+                ||:::||
+                ||:::||
+               /||:::||\
+              / ||:::|| \
+             /  ||:::||  \
+            /   ||:::||   \
+        ___/____||:::||____\____
+       /~~~~~~~~~~~~~~~~~~~~~~~~\
+      /   |~~~~~~~~|  _____      \
+      |   |________| |  |  |     | Cygnus Mineah
+______|______________|__|__|_____|_________
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="space_needle/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A towering, minimalist observation tower reminiscent of mid-century futurist design rises majestically against a pitch-black night sky. At its base, a wide, single-story pavilion with clean geometric entryways is flanked by sharp, diagonal structural braces that angle upward to stabilize a slender, soaring central column. This main shaft features parallel vertical ribbing and a vertical track of glowing porthole windows, interrupted only by three larger horizontal circular openings near the upper-middle section. Crowning the shaft is a wide, saucer-shaped observation deck with tiered horizontal bands, a continuous strip of glowing windows, and thin antenna-like horizontal spires extending outward from its sides. Atop this pod, a stepped crown supports a razor-thin, vertical antenna tower that ends with a single brilliant white beacon shining at the apex. The entire scene is captured in stark monochrome, with the bright white light from the tower&#x27;s windows and beacon contrasting sharply against the deep, solid black background, while a small, discreet signature reading &quot;Cygnus Mineah&quot; appears in the lower-right corner of the frame.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/space_needle/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>.-&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.                               
+                                   .-&#x27;  .-----._ `-.                            
+                                .-&#x27;   .-&#x27;  _  _  `-. `.                          
+                              .&#x27;    .-&#x27;   ( )( )    `-. `.                       
+                             /    .-&#x27;   __   ||   __    `-. \                      
+                            /   .-&#x27;    /__\  ||  /__\     `-. \                    
+                           /  .&#x27;        | |   ||   | |       `. \                   
+                          ;  /      ____|_|___||___|_|____      \ ;                  
+                         /| /      .&#x27;    .---.  ||  .---.   `.    \ |\                
+                        / |/      .&#x27;    .&#x27;   &#x27;. || .&#x27;   &#x27;.    `.   \| \               
+                       /  /      /_____/|  o o  ||  o o  |\_____\   \  \              
+                      /  /          | | |  o o  ||  o o  | | |        \  \             
+                     /  /           | | |   o   ||   o   | | |         \  \            
+                    /  /            | | |        ||        | | |         \  \           
+                   /__/_____________|_|_|________||________|_|_|__________\__\          
+                   \  \             /|/|/|/|/|/|/||\|\|\|\|\|\|\|\|\|\|\|\ /  /         
+                    \  \           /_/ /_/ /_/ /_/||\_\_\_\_\_\_\_\_\_\_\_\  /          
+                     \  \         /  /      .-====++====-.      \  \     /  /           
+                      \  \       /  /     .-&#x27;  .--==--.   `-.     \  \   /  /            
+                       \  \     /  /     /    /  ____  \    \     \  \ /  /             
+                        \  \   /  /     /    / .&#x27;____&#x27;. \    \     \  \  /              
+                         \  \ /  /     /    / / /    \ \ \    \     \  \/               
+                          \  V  /     ;    ; | |  ()  | | ;    ;     \ /                
+                           \   /      |    | | |      | | |    |      X                 
+                            \ /       ;    ; | |  ()  | | ;    ;    / \                
+                             X        /    / \ \ \____/ / /    \   /   \               
+                            / \      /    /   \ `-.__.-&#x27; /   \    \ /     \              
+                           /   \    /    /     `-.____.-&#x27;     \    X       \             
+                          /     \  /____/_______________________\  / \       \           
+                         /       \/       .-._.-._.-._.-._.-.    \/   \       \          
+                        /        /\      .&#x27;  .-._.-._.-._.   `.    /\   \       \         
+                       /        /  \    /   /               \   \  /  \   \       \        
+                      /        /    \  /   /                 \   \/    \   \       \       
+                     /        /      \/___/                   \___\     \   \       \      
+                                                                                    *     
+                                                                                  *        
+                                                                                        
+                                                                     Cygnus Mineah</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/space_needle/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>.                                            
+                                   |                                            
+                                   |                                            
+                                  / \                                           
+                                  | |                                           
+                                  | |                                           
+                                 _|=|_                                          
+                           ------/=====\------                                  
+                              __/=======\__                                     
+                           .-==============-.                                   
+                        .-====================-.                                
+                      .=========================.                               
+                     /||||||||||||||||||||||||||\                               
+                    /============================\                              
+                    | [] [] [] [] [] [] [] [] [] |                              
+                    |============================|                              
+                    |----------------------------|                              
+                    |            (   )           |                              
+                    |            (   )           |                              
+                    |            (   )           |                              
+                    |----------------------------|                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                    |  || || || || || || || ||  |                              
+                   /|  || || || || || || || ||  |\                             
+                  / |  || || || || || || || ||  | \                            
+                 /  |  || || || || || || || ||  |  \                           
+                /   |  || || || || || || || ||  |   \                          
+               /    |  || || || || || || || ||  |    \                         
+              /_____|____________________________|_____\                        
+              |        __      ____      __        |                            
+              |       |  |    |    |    |  |       |                            
+              |_______|__|____|____|____|__|_______|                            
+                                                                                
+                                                              Cygnus Mineah</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/space_needle/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>*                                       
+                                       |                                       
+                                       |                                       
+                                      _|_                                      
+                                     [___]                                     
+                                 .-&#x27;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&#x27;-.                                 
+                              .-&#x27;             &#x27;-.                              
+                           .-&#x27;                   &#x27;-.                           
+       &lt;====================[=====================]====================&gt;       
+                            \  [o] [o] [o] [o] [o]  /                          
+                            &#x27;---------------------&#x27;                            
+                                  || | | | ||                                  
+                                  || | o | ||                                  
+                                  || | | | ||                                  
+                                 ||(O)(O)(O)||                                 
+                                  || | | | ||                                  
+                                  || | o | ||                                  
+                                  || | | | ||                                  
+                                 /|| | o | ||\                                 
+                                / || | | | || \                                
+                               /  || | o | ||  \                               
+                              /   || | | | ||   \                              
+                             /    || | o | ||    \                             
+                            /     || | | | ||     \                            
+                           /      || | o | ||      \                           
+                          /       || | | | ||       \                          
+                         /        || | o | ||        \                         
+                        /         || | | | ||         \                        
+                       /          ||_|_|_|_||          \                       
+                      /    _______|         |_______    \                      
+                     /    |   _   |  _   _  |   _   |    \                     
+                    /_____|  | |  | | |   | | |  | |  |_____\                  
+                 [_____________________________________________]               
+                                                                  Cygnus Mineah</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/space_needle/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>\ | /
+                                    -  *  -
+                                     / | \
+                                       |
+                                       |
+                                       |
+                                     __|__
+                                   _|_____|_
+                             _.-&quot;&quot;&quot;_________&quot;&quot;&quot;-._
+                       -----&lt;_____________________&gt;-----
+                             \___[===========]___/
+                              \_________________/
+                                 |  |  o  |  |
+                                 |  |  |  |  |
+                                 |  |  o  |  |
+                                 |  |  |  |  |
+                                 |  |  o  |  |
+                                 |  |  |  |  |
+                                |=============|
+                                | (O) (O) (O) |
+                                |=============|
+                                 |  |  |  |  |
+                                 |  |  o  |  |
+                                 |  |  |  |  |
+                                 |  |  o  |  |
+                                 |  |  |  |  |
+                                 |  |  o  |  |
+                                /|  |  |  |  |\
+                               / |  |  o  |  | \
+                              /  |  |  |  |  |  \
+                             /   |  |  o  |  |   \
+                            /    |  |  |  |  |    \
+                           /     |  |  o  |  |     \
+                          /______|__|__|__|__|______\
+                         /___________________________\
+                        |     ___             ___     |
+                        |    |   |           |   |    |
+========================|____|   |___________|   |____|========================
+                                                                  Cygnus Mineah</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Taj Mahal</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="taj_mahal/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                                      |
+                                      8
+                                     / \
+                                  ,/&#x27;   `\.
+                                ,&#x27;`&quot;`&quot;`&quot;`&quot;``.
+                               /             \
+     __                       ;               :                       __
+    /&#x27;`\                  ,db,|               |,db,                  /&#x27;`\
+   |____|   ,&#x27;`.     A   /    :_,_,_,_,_,_,_,_;    \   A     ,&#x27;`.   |____|
+    |&quot;&#x27;|    |__|    A|\_,|`&quot;`&quot;`A`&quot;`&quot;`&quot;`&quot;`&quot;`&quot;`A&#x27;`&quot;`&quot;|,_/|A    |__|    |&quot;&#x27;|
+    J  J    |  |    |`\,A|_____|_____________|_____|A,/&#x27;|    |  |    J  J
+    |&quot;&#x27;|    J`&quot;J    |   |j/|A|\| ,_,_,_,_,_, |/|A|\l|   |    J&quot;&#x27;J    |&quot;&#x27;|
+    |  |    |  |    | _ |  __  | ;   ___   ; |  __  | _ |    |  |    |  |
+    F  J    |  |    |/ || /  \ | : ,&#x27; _ `. : | /  \ || \|    |  |    F  J
+   J&quot;&#x27;&quot;&#x27;J   F  J    ||_|| |__| | ; |_/_\_| ; | |__| ||_||    F  J   J&quot;&#x27;&quot;&#x27;J
+   |    |  J`&quot;`&quot;J   | _ |  __  | : |`&quot;`&quot;`| : |  __  | _ |   J&quot;&#x27;&quot;&#x27;J  |    |
+   |    |  |    |   |/ || /  \ | ; | / \ | ; | /  \ || \|   |    |  |    |
+   F    |__|____|___||_||_|__|_|_:_|_|_|_|_:_|_|__|_||_||___|____|__|    J
+  J&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;T&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;T&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;&#x27;&quot;J
+  |,^,,^,,^,,^,,^,,^,,^,,^,,^,|,^,^,^,^,^,^,^,|,^,,^,,^,,^,,^,,^,,^,,^,,^,|
+ _||_||_||_||_||_||_||_||_||_|||_|_|_|_|_|_|_|||_||_||_||_||_||_||_||_||_||_
+|                             |/ V V V V V V \|                             |
+|_____________________________||_|_|_|_|_|_|_||_____________________________|
+                                                                        fsc
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="taj_mahal/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A front-facing view of the iconic Taj Mahal, crafted from pristine white marble, stands in perfect symmetry against a deep, pitch-black night sky. At the center of the composition, a large, bulbous onion dome rises majestically, capped by a slender, pointed spire that reaches upward into the darkness. Below the main dome, the grand central facade features a massive, recessed arched portal, flanked on either side by a series of smaller, symmetrical double-tiered arched niches. Four elegant, multi-tiered minarets rise from the corners of the base, topped with delicate pillared cupolas, with the outermost pair framing the entire monument. The entire structure rests upon a grand, wide, multi-level marble plinth adorned with a repeating pattern of decorative carvings along its lower band. The stark contrast of the brilliant white stone against the absolute darkness creates a glowing, ethereal effect, as if the monument is illuminated by a powerful, soft light that emphasizes its clean lines, intricate geometries, and smooth marble textures.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/taj_mahal/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>.-.
+                           .-&#x27;   &#x27;-.
+                        .-&#x27;         &#x27;-.
+                     .-&#x27;               &#x27;-.
+                   .&#x27;         /\          &#x27;.
+                  /         __/  \__        \
+                 /      _.-&#x27;          &#x27;-._    \
+                /    .-&#x27;     .------.     &#x27;-.  \
+               ;   .&#x27;       .&#x27;        &#x27;.       &#x27;. ;
+               |  /       .&#x27;   .----.   &#x27;.       \ |
+               | ;       /    /      \    \       ;|
+               | |      ;    ;  .--.  ;    ;      | |
+               | |      |    | (    ) |    |      | |
+               | |      ;    ;  &#x27;--&#x27;  ;    ;      | |
+               | ;       \    \      /    /       ;|
+               |  \       &#x27;.   &#x27;----&#x27;   .&#x27;       / |
+               ;   &#x27;.       &#x27;.        .&#x27;       .&#x27;  ;
+                \     &#x27;-._     &#x27;----&#x27;     _.-&#x27;     /
+                 \        &#x27;-.__________.-&#x27;        /
+                  &#x27;.                            .&#x27;
+                    &#x27;._                      _.&#x27;
+                       &#x27;---.            .---&#x27;
+                    .-._    &#x27;----------&#x27;    _.-.
+                 .-&#x27;   _&#x27;-._            _.-&#x27; _   &#x27;-.
+               .&#x27;   .-&#x27;   __&#x27;-.______.-&#x27;__   &#x27;-.    &#x27;.
+              /   .&#x27;   .-&#x27;                &#x27;-.   &#x27;.    \
+             /   /    /   .--.        .--.   \    \    \
+            ;   ;    ;   /    \      /    \   ;    ;    ;
+            |   |    |   |      |    |      |  |    |    |
+            |   |    |   |      |    |      |  |    |    |
+            |   |    |   ;      /      \    ;  |    |    |
+            |   |    |    \    /        \  /   |    |    |
+            ;   ;    ;     &#x27;._/          \_.-&#x27;  ;    ;    ;
+             \   \    \        &#x27;-.____.-&#x27;        /    /   /
+              &#x27;.  &#x27;.   &#x27;.                      .&#x27;   .&#x27;  .&#x27;
+                &#x27;-._&#x27;-._ &#x27;--------------------&#x27; _.-&#x27;_.-&#x27;
+                     &#x27;---&#x27;====================&#x27;---&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/taj_mahal/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>^                                   
+                                  / \                                  
+                                 /___\                                 
+                                /`___&#x27;\                                
+                               / /   \ \                               
+                              /_/_____\_\                              
+                            .-&#x27;  ___ ___  &#x27;-.                          
+                         .-&#x27;   .&#x27;/  |  \&#x27;.   &#x27;-.                       
+                       .&#x27;      / /   |   \ \      &#x27;.                    
+                     .&#x27;       /_/    |    \_\       &#x27;.                  
+                    /        .--.    |    .--.        \                 
+                   /       .&#x27;/   &#x27;\  |  /&#x27;   \&#x27;.       \                
+                  ;       / /  _  \ \|/ /  _  \ \       ;               
+                  |      /_/.-&#x27; &#x27;-.\   /.-&#x27; &#x27;-.\_\      |               
+                  |      |||  ___  ||   ||  ___  ||      |              
+             _    |      ||| /   \ ||   || /   \ ||      |    _         
+           _/ \_  |      ||||  _  |||   |||  _  ||||     |  _/ \_       
+          /_/ \_\ |      |||| (_) |||   ||| (_) ||||     | /_/ \_\      
+            | |   |      ||||     |||   |||     ||||     |   | |        
+            | |   |      |||\     /||   ||\     /|||     |   | |        
+            | |   |      ||| &#x27;. .&#x27; ||   || &#x27;. .&#x27; |||     |   | |        
+            | |   |      |||   |   ||   ||   |   |||     |   | |        
+           _|_|_  |      |||   |   ||   ||   |   |||     |  _|_|_       
+         .&#x27;/___\&#x27;.|     _|||___|___||___||___|___|||_    |.&#x27; /___\ &#x27;.    
+        /_/_____\_\  .-&#x27;  _________________________  &#x27;-. /_/_____\_\   
+        |  _ _  | | /    /                         \    \ | |  _ _  |    
+        | | | | | |/    /   ____           ____    \    \| | | | | |    
+        | | | | | /    /   / __ \         / __ \    \    \ | | | | |    
+        | | | | |/    /   / /  \ \       / /  \ \    \    \| | | | |    
+        | | | | /    /   / /____\ \_____/ /____\ \    \    \ | | | |    
+        | | | |/    /   /_________________________\    \    \| | | |    
+        |_|_|_/____/________________________________\____\____\_|_|_|    
+      __/____________________________________________________________\__ 
+     /__________________________________________________________________\
+     ||== == == == == == == == == == == == == == == == == == == == ==||  
+     ||__||__||__||__||__||__||__||__||__||__||__||__||__||__||__||__||  
+     &#x27;------------------------------------------------------------------&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/taj_mahal/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>|                                       
+                                      /|\                                      
+                                       |                                       
+                                      .-.                                      
+                                     (   )                                     
+                                    /     \                                    
+                                  .&#x27;       &#x27;.                                  
+                                 /           \                                 
+                                ;             ;                                
+   /\                           |             |                           /\   
+  /__\                          \             /                          /__\  
+  |oo|                           )===========(                           |oo|  
+ ======                         /  _  _ _  _  \                         ====== `
+  |  |                         |  |_| | | |_|  |                         |  |  
+  |  |                    ===========================                    |  |  
+ ======                   |                         |                   ====== `
+  |  |              /\    |   ===================   |    /\              |  |  
+  |  |             /__\   |   |   ___________   |   |   /__\             |  |  
+ ======            |  |   | |                     | |   |  |            ====== `
+  |  |         ===========|   ___________________   |===========         |  |  
+  |  |         |  _______  || |  _______________  | ||  _______  |         |  |  
+  |  |         | |  ___  | || | /                 \ | || |  ___  | |         |  |  
+  |  |         | | /   \ | || |/                   \| || | /   \ | |         |  |  
+  |  |         | | |   | | || |                     | || | |   | | |         |  |  
+ ======        | | |___| | || |                     | || | |___| | |        ====== `
+  |  |         | |=========| || |                     | || |=========| |         |  |  
+  |  |         | |  ___  | || |                     | || |  ___  | |         |  |  
+  |  |         | | /   \ | || |                     | || | /   \ | |         |  |  
+  |  |         | | |   | | || |                     | || | |   | | |         |  |  
+  |  |         | | |___| | || |                     | || | |___| | |         |  |  
+  |  |         | |_______| || |_____________________| || |_______| |         |  |  
+/    \_____________________________________________________/    \
+|                                                                           |
+| = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = |
+|___________________________________________________________________________|</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/taj_mahal/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>|
+                                      -+-
+                                     ( o )
+                                     |   |
+                                    /     \
+                                  .&#x27;       &#x27;.
+                                 /           \
+      _o_                       |             |                       _o_
+     /   \                      |             |                      /   \
+    | | | |                     &#x27;.           .&#x27;                     | | | |
+    |_____|           _o_         \         /         _o_           |_____|
+    |  |  |          /   \        _\_______/_        /   \          |  |  |
+    |  |  |         | | | |      [___________]      | | | |         |  |  |
+    |  |  |         _|_____|__.-&#x27;_________________&#x27;-.__|_____|_     |  |  |
+    |_____|      |  .-.  ||  .-.  _.-^^^-._  .-.  ||  .-.  |      |_____|
+    |  |  |      |  | |  ||  | |.&#x27;  _..._  &#x27;.| |  ||  | |  |      |  |  |
+    |  |  |      |  | |  ||  | ||  / ||| \  || |  ||  | |  |      |  |  |
+    |  |  |      |  &#x27;-&#x27;  ||  &#x27;-&#x27;|||  |||  |||&#x27;-&#x27;  ||  &#x27;-&#x27;  |      |  |  |
+    |_____|      |  .-.  ||  .-.|||  |||  |||.-.  ||  .-.  |      |_____|
+    |  |  |      |  | |  ||  | ||||  |||  |||| |  ||  | |  |      |  |  |
+    |  |  |      |  | |  ||  | ||||  |||  |||| |  ||  | |  |      |  |  |
+    |  |  |      |  | |  ||  | ||||  |||  |||| |  ||  | |  |      |  |  |
+    |  |  |      |  &#x27;-&#x27;  ||  &#x27;-&#x27;|||__|||__|||&#x27;-&#x27;  ||  &#x27;-&#x27;  |      |  |  |
+    |_____|      |_______||_____|||___|___|||_____||_______|      |_____|
+  [_________________________________________________________________________]
+  |.-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.|
+  ||_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_||
+  |_________________________________________________________________________|
+ /___________________________________________________________________________\</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Reindeer</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="reindeer/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                                           (\
+                                          (`.`.
+                                           \:::\
+    _  _                                  _ `:::L
+   F|.&#x27;:)                                (::--\:|
+  /:/::&#x27;                                (_:-.:::|
+ J:::&#x27;                                       |::|
+ |::F                                        |::F
+  L:\                                        F:J
+  |::`_                                   .-&#x27;::J
+   L:::)                                  `--|:J
+   |::L                                      F:|
+    L:|                                     J  |
+    |:J                          _          F  F
+    J::L       .-.-.            (:|  -     J: J
+     |::L      |/ /-.    |V     .\:\||     F:J
+      L:J    /||.&#x27; :&#x27;    |:L    `:`:\|    J: J
+      |::L   |.&#x27; .&#x27;      |:L      `.:|   .&#x27;.:/
+       L::\  \  J        |:)       |:|.-&#x27;:::/
+        \  \  | |        |.|     _.J:/ `::.&#x27;
+         \  `.J `._      |:L   .&#x27;.&#x27; /_.--&#x27;
+          \ `- \:. `-._  |:J .::: .-&#x27;
+           `-.__`::_  ::.J:|::::-&#x27;`.
+                   .-._:&#x27;J `-:::   |
+                   |  \      ::: .&#x27;
+                   `._ o  .::::o&#x27;                          __.----.__     .-&#x27;-
+                      L:`.-&quot;-.&#x27;(  .-:::-.__      ____.----&#x27;   ::  :  `-._/    &lt;
+                       \` &gt;  &lt; ::::::::&quot;&quot;&quot;&#x27;&quot;&quot;&quot;&quot;&quot;&quot;       `    `       :  \  (&quot;&quot;`
+                        |( == |::::::&#x27;                                 :`.&lt;
+                        J `--&#x27;:::::::.                    : :           :::L
+                         |`-. :::::::::.                   :             : |
+                         J  |: :::::::::                  : :              |
+                          | |: :`::::::&#x27;   :                ` :            F
+                          | |: : : `&quot;&quot;                                 &#x27;  J
+                          | |: :&#x27;           :                             F
+                          | |  _             .                   &#x27;   &#x27;   J
+                          J    ::            :                .          |
+                           \   ::`.          : _             .::         F
+                            L  :   `.  . ::  |:::.          .:&#x27; `        L
+                            \  : :.  \: :::  |::::.   .  . ::   :..      \
+                             `.: :::. `  ::: |:::::&#x27;_     :&#x27; ..-:::`.:    \
+                               L-:::::.`.&#x27; : |::&#x27; `::::..  .::&#x27; `:   `..   \
+                               J  &quot;:|---\::::| &quot;-.___:::::&quot;&#x27;/    `.   .\:.  `.
+                                L  :|    L:: |                     `.  :\: ::J
+                                |  :|    |:: J                       \  :\  :|
+                                J  :|     \   L                       \   |  |
+                                 F  |     |  :|                        \  |: |
+                                 F  F     |  :|                         F J: |
+                                 F J      |  :|                         | |: |
+                                 L |       L :|                         | |: |
+                                 L |       J  |                         | |: |
+  VK                             |:|      __L |----.___.----------------| || |-----
+                               __| F-----&#x27;  J |                         F |F:J
+           _   _________.-----&#x27;  | |         LJ                        J: |:  &gt;  ..
+         _/ `-&#x27;                  | |         F \                       F: /:.&#x27;:::::
+-.___.--&#x27;                        F |         F  )                 .::.&#x27;:.&#x27;/:/  :::
+                                /  J        J .&#x27;           &quot;&quot;&quot;:::::.:`-&#x27; &#x27;-&#x27; ..:::
+                               /_.&#x27;        /_/   :::::::....
+                              ...        .::::..
+                             :::::..
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="reindeer/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A majestic, large-antlered stag stands alert in a three-quarter profile, dramatically illuminated against a pitch-black background. The stag&#x27;s powerful torso and slender legs are rendered in crisp, glowing white highlights that define its musculature, while its head is turned slightly toward the viewer with two bright, circular eyes gleaming in the dark. From the crown of its head, a towering set of symmetrical, branching antlers sweeps upward in intricate, curving tines that reach high into the darkness. The animal stands firmly on slightly uneven, dark ground, with subtle highlights outlining its hooves and the low, rugged terrain. The scene features intense, high-contrast directional lighting, casting strong white highlights along the contours of the stag’s form while leaving the core of its body and the surrounding environment enveloped in deep, silent shadows.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/reindeer/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>. . . . . . . . . . . . . . . . . .                               
+                           .-&#x27;&#x27;&#x27;`                                       `&#x27;&#x27;&#x27;-.                        
+                        .-&#x27;                                               _    `-.                     
+                     .-&#x27;                                              _.-&#x27; `-._    `-.                  
+                  .-&#x27;                                              _.-&#x27;          `-._  `-.               
+                .&#x27;                                              _.-&#x27;                  `-.  `.            
+              .&#x27;                                           _..-&#x27;                         `-.  `.          
+            .&#x27;                                        _..-&#x27;                                  `-. `.        
+          .&#x27;                                     _..-&#x27;                                          `-. `.     
+         /                                   _..-&#x27;                                                  `-. \   
+        /                                _..-&#x27;                                                        \ \  
+       ;                             _..-&#x27;                                                              ; ; 
+       |                         _..-&#x27;                                                                   | |
+       |                     _..-&#x27;                                                                       | |
+       |                  .-&#x27;&#x27;                                                                            | |
+       |                .&#x27;    `.                                                                          | |
+       |               /  .--.  \                                                                         | |
+       |              /  /    \  \                                                                        | |
+       |             ;  |  .-. |  ;                                                                       / /
+       |             |  | (o o)|  |                                                                      / /
+       |             |  |  \_/ |  |                                                                     / /
+       |              \  \     /  /                                                                    _/ /
+       |               `. `-.-&#x27; .&#x27;                                                                  _.-&#x27;  |
+       |                 `-.___.-&#x27;                                                               _..-&#x27;     |
+       |                  _/   \_                                                            _..-&#x27;        /
+       |             _..-&#x27;  ___  `-._                                                  _..-&#x27;             /
+       |        _..-&#x27;   _.-&#x27;   `-._   `-._                                      _..-&#x27;                   /
+       |   _..-&#x27;   _.-&#x27;`           `-._   `-._                            _..-&#x27;                        /
+       |.-&#x27;   _.-&#x27;                     `-._   `-._                  _..-&#x27;                             /
+       /  _.-&#x27;                              `-._   `-._        _..-&#x27;                                _/
+      /.-&#x27;                                        `-._  `-._.-&#x27;                                   _.-&#x27;
+     /                                                 `-._   `-._                           _..-&#x27;     
+    /                                                      `-._   `-._                 _..-&#x27;          
+   /                                                           `-._   `-._       _..-&#x27;               
+  /                                                                `-._   `-._.-&#x27;                     
+ /                                                                      `-._                           
+/                                                                            `-._                      
+                                                                             _.-&#x27;                      
+                                                                      _..-&#x27;`                            
+                                                             _..-&#x27;`                                    
+                                                    _..-&#x27;`                                              
+                                            _..-&#x27;`                                                     
+                                     _..-&#x27;`                                                              
+                              _..-&#x27;`                                                                      
+                       _..-&#x27;`                                                                             
+                  _..-&#x27;`                                                                                  
+             _..-&#x27;`                                                                                       
+        _..-&#x27;`                                                                                           
+     _..-&#x27;`                                                                                              
+  _.-&#x27;`                                                                                                  
+.&#x27;                                                                                                       
+                                                                                                         
+                                                                                                         
+                                         _..---.._                                                       
+                                     _.-&#x27;         `-._                                                  
+                                  _.-&#x27;   .-._.-._.    `-._                                               
+                               _.-&#x27;    .-&#x27;  _   _  `-.    `-._                                            
+                            _.-&#x27;      /    (o) (o)     \      `-._                                         
+                         _.-&#x27;        /       .-^-.       \         `-._                                      
+                      _.-&#x27;          /       .&#x27;   `.       \           `-._                                   
+                   _.-&#x27;            /       /  _._  \       \              `-._                                
+                _.-&#x27;              /       ;   /   \  ;       \                `-._                            
+             _.-&#x27;                /         |  |     |  |       \                  `-._                        
+          _.-&#x27;                  /          |  |     |  |        \                    `-._                    
+       _.-&#x27;                    /            \  ;.___.;  /         \                      `-._                
+    _.-&#x27;                      /              `-._____.-&#x27;           \                         `-._            
+ _.-&#x27;                        /               .-&#x27;  _|_  `-.           \                           `-._         
+&#x27;                          _/_____________.-&#x27;   .&#x27;   `.   `-._       \______________________________ `-.      
+                        .-&#x27;   _..---.._      .&#x27;       `.      `-._                               _..-`      
+                      .&#x27;  .-&#x27;`         `&#x27;-._ /           \ _..--.  `-.                        .-&#x27;`          
+                     / .-&#x27;                   `-.       .-&#x27;&#x27;      `.   `-.                  .-&#x27;              
+                    /.&#x27;                        `-.   .&#x27;            `.    `-.            .&#x27;                 
+                   /                             `-./                \      `.        .&#x27;                    
+                  /                                                     \       `.    .&#x27;                     
+                 /                                                       \        `..&#x27;                        
+                /                                                         \                                  
+               /                                                           \                                 
+              /                                                             \                                
+             /                                                               \</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/reindeer/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>_.-^^-._
+                              _.-&#x27;  _  _  `-._
+                           .-&#x27;    .&#x27; \/ `.     `-.
+                         .&#x27;     .&#x27;  /\   `.       `.
+                        /     .&#x27;   /  \    `.       \
+                       /    .&#x27;    / /\ \     `.      \
+                      ;    /    _/ /  \ \_     \      ;
+                      |   /   .&#x27;  / /\ \  `.    \     |
+                      |  ;   /   / /  \ \   \    ;    |
+                      ;  |  ;   /_/ /\ _\;   ;   |    ;
+                       \ |  |      /  \      |   |   /
+                        \|  |  _  / /\ \  _  |   |  /
+                         |  | / \/ /  \ \/ \ |   | /
+                         |  ; \   / /\ \   / ;   |/
+                         ;   \ `-` /  \ `-` /    ;
+                          \   `._ / /\ \ _.&#x27;    /
+                           `.    /_/  \_\     .&#x27;
+                             `-.             .-&#x27;
+                                `\   .-.   /&#x27;
+                                  \ (o o) /
+                                   |  ^  |
+                            __..---| `-&#x27; |---..__
+                      __..-&#x27;      /|     |\      `-..__
+                 _.-&#x27;&#x27;           / |     | \           ``-._
+              .-&#x27;               /  |     |  \               `-.
+            .&#x27;      __..---..__/   |     |   \__..---..__      `.
+           /   _.-&#x27;&#x27;      _.-&#x27;     ;     ;      `-._      ``-._  \
+          / .-&#x27;        .-&#x27;        /       \         `-.         `.\ 
+         ; /         .&#x27;         _/   /\    \_          `.         \ ;
+         |/        .&#x27;      _..-&#x27;   _/  \_    `-.._       `.        \|
+         /       .&#x27;   _.-&#x27;&#x27;      .&#x27;/ /\ `.`      ``-._     `.       \
+        ;      .&#x27;_.-&#x27;&#x27;          / / /  \ \ \          ``-._  `.      ;
+        |   .-&#x27;&#x27;               /_/ /    \ \_\               ``-.|     |
+        | .&#x27;                      /      \                     `.|     |
+        |/                  __   /   __   \   __                 \     |
+        /               _.-&#x27;  `./ .-&#x27;  `-. \.&#x27;  `-._              \    |
+       ;             .-&#x27;      _/ /        \ \_      `-.            ;   ;
+       |           .&#x27;      .-&#x27;  /          \  `-.      `.          |   |
+       |          /     .-&#x27;    /            \    `-.     \         |   |
+       ;         ;    .&#x27;      /              \      `.    ;        ;   ;
+        \        |   /      _/                \_      \   |       /   /
+         `.      |  ;   _.-&#x27;                    `-._   ;  |     .&#x27;   .&#x27;
+           `-._  ;  |.-&#x27;                            `-.|  ;  _.-&#x27;  _.&#x27;
+               `-;  |                                  |  ;-&#x27;  _.-&#x27;
+                 |  ;                                  ;  |
+                 |  |         __                 __    |  |
+                 ;  |      .-&#x27;  `-.         .-&#x27;  `-.   |  ;
+                  \  \    /  _   _ \       / _   _  \ /  /
+                   \  `._|  ( ) ( ) |_____| ( ) ( ) |_.&#x27;
+                    `-.__\     ^    /     \    ^    /__.-&#x27;
+                          `-.___..-&#x27;       `-..__.-&#x27;
+                               /  .--.  .--.  \
+                          ____/__/    \/    \__\____
+                     _.-&#x27;&#x27;        _..__.._         ``-._
+                 _.-&#x27;          .-&#x27;  _  _  `-.          `-._
+              .-&#x27;            .&#x27;/\.-&#x27; \/ `-./\`.            `-.
+             /______________.&#x27;_/  `-.__.-&#x27;  \_`.______________\
+             `------------------------------------------------&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/reindeer/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>.  .
+                                                    /#\/#\
+                                     _             /######\             _
+                                    /#\           /##/  \##\           /#\
+                                   /##/\_        /##/    \##\        _/##\
+                                  /##/  /_______/##/      \##\______/  \##\
+                                 /##/    \########/        \########/   \##\
+                                /##/      \######/          \######/     \##\
+                               /##/        |####|            |####|       \##\
+                              /___/        |####|            |####|        \___\
+                                           \####\            /####/
+                                            \####\__________/####/
+                                             \##################/
+                                               \##############/
+                                                   |####|
+                                                  /######\
+                                                _/########\_
+                                               /###  ..  ###\
+                                              |##   o  o   #|
+                                               \##    \V/   /
+                                                \##########/
+                                                /##########\
+                                      _________/####    ####\
+                                    /###########/          \##\
+                                   /###########/            \##\________
+                                  /###########/              \##########\
+                                 /######/                      \#########\
+                                /######/                        \########\
+                               /######/                          \#######\
+                              /######/                            \##/\###\
+                             /######/                              \/  \###\
+                            /######/                                    \###\
+                           /######/                                      \###\
+                          |######|                                        |###|
+                          |######|                                        |###|
+                         /########\                                      /#####\
+           . . ... .._ _/##########\_ _ . . . . ... ... ... .. . . .. ._/#######\_ _ . .</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/reindeer/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>. /                   \ #
+                      / /                     \ ##
+                    _/ /                       \ ##_
+                   /  |  /.                 /.  |   #
+                  |  /  / /                 \ \  \  |
+                   \/  / /                   \ \  \/
+                      / /  /.             /.  \ #
+                     | |  / /               \ \  | #
+                     \ |/ /                   \ \| #
+                      \  /                     \  /
+                       |/                       \|
+                       |     _.,.-----.,._     #
+                      /    /`             `\    #
+                          /   _         _   #
+                          |  (*)       (*)  #
+                           \       .       /
+                            `\           /#
+                              `--._____.--&#x27;
+                                 |     #
+                                /       #
+                    _..-------..&#x27;       #
+                _.-&#x27;           \        #
+             _.&#x27;                |       #
+           .&#x27;          _.       |       #
+          /        _.-&#x27;  `.     /       #
+         /       .&#x27;        |   |        #
+        |      .&#x27;          |   |       /
+        |     |             \   \     /
+        |     |              |   |   |
+         \     \             |   |    #
+          \     \             \   \   #
+           \     |             \   |  #
+            |    |              |  |  #
+            |    |              |  |  #
+           _._  _._            _._  _._
+          /  # /  #           /  # /  #
+         /____/____#         /____/____#
+~--..___..-~-._.-~.._.-~--.__.-~.._--.._.-~-.._.-~-
+   .      .       .         .        .         .</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Okapi</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="okapi/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>              .&#x27;\
+     .___    /   \
+      `. `.-Y     |
+        `/  |     /`&#x27;&#x27;---.......--&#x27;`&#x27;-.
+      .-&#x27;   ) __.&#x27;                     `\
+    .&#x27;     \                             Y
+   /  -=._.&#x27;     )                        `.
+  :   `-;       .                           `.
+  /           .^-.                            \
+ /          .&#x27;    `-.                          Y
+|,-   _...-&#x27;         `&#x27;-.                      ]
+\   .&#x27;                  |`                     ]L
+ `&#x27;&#x27;                    [                      [[
+                        [                     ] L
+                        \  &#x27;                  [ |
+                         \                   ]  [
+                          Y &#x27;  &#x27;             |  [
+                          |  \  .           /| J
+                          A   `&#x27;-:..\  .==-&#x27; A ]
+                           L=._   |  Y   --&#x27;J =]
+                           J _ &quot;&quot;`|  |=-   .L_./
+                            [     |  |  .-&#x27;]_,/
+                            ] \ \ [  ]._.-&#x27;[=Y
+                             [,-|)--.]  .=]=-]
+                      ....---/_  `    &#x27;,  ]_,[
+                   .-`      / ~`  )_   Y-=J ]
+                 .&#x27;.       /.&#x27; _.&#x27; \   |_ \ ]
+                 [Y==-&#x27; |  `-&#x27;`        y_)/ ]
+                 [|=.__ |       ,     /  Y  ]
+                 `|_    /.__    \  |.;|\ |  ]
+                  /.` .&#x27;    ``!&quot;`[=|/||; |  ]
+                .&#x27;\ .&#x27;        |  [_|=||; |  \
+                |`&#x27;//         /  [=|_|/\_\  (
+                [ ]]          )  (/)-))  (j-&#x27;\
+                [ []         /&#x27;j-|-|_|`j-&#x27;\  /
+                / LJ         \ ] / | | ]  /`&#x27;
+                &gt;&#x27;\ \         `&#x27;`&gt;&#x27;\ \`&#x27;`&#x27;
+                &quot;-=&quot;-  sk        &quot;-=&quot;-
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="okapi/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A lone kangaroo stands upright in profile against a pitch-black background, its entire silhouette dramatically defined by a stark, glowing rim of white light. The kangaroo&#x27;s head is positioned in the upper-left of the frame, featuring long, pointed ears reaching upward, a gentle slope to its snout, and a soft curve defining the jawline. Its slender neck leads down to a muscular upper body where its short forelimbs are held close to its chest. The powerful, curved line of its back arches toward the right, flowing into a thick, heavy tail that extends down to the ground to stabilize its stance. In the lower half of the frame, its robust hind legs are bent at the joints, with one foot stepping forward to the left. The high-contrast lighting is purely directional from behind, catching only the fine, downy texture of the fur along the outer edges of its head, back, legs, and tail, while the interior of the body remains cloaked in complete, velvety darkness.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/okapi/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>_..-&#x27;&#x27;&#x27;&#x27;-.._
+                    _.-&#x27;`            `&#x27;-._
+                 .-&#x27;`                      `&#x27;-.
+               .&#x27;                              `.
+              /                                  \
+             /                                    \
+            /                                      \
+           /                                        \
+          /                                          \
+         /                                            \
+        /                                              \
+       /                                                \
+      /                                                  \
+      |                    .-&#x27;&#x27;&#x27;&#x27;-.                      |
+      |                 .-&#x27;        `-.                   |
+      |               .&#x27;   .-&quot;&quot;&quot;&quot;-.    `.                |
+      |              /    .&#x27;  _  _  `.    \               |
+      |             ;    /   (o)(o)   \    ;              |
+      |             |   |      __      |   |              |
+      |             ;    \    .____.   /    ;             |
+      |              \    `.          .&#x27;    /              |
+      |               `.    `-.___.-&#x27;     .&#x27;               |
+      |                 `-.             .-&#x27;                |
+      |                    `-._______ .-&#x27;                  |
+      |                          / \                       |
+      |                         /   \                      |
+      |                        /     \                     |
+      |               ________/       \______              |
+      |          _.-&#x27;`                   `&#x27;-._             |
+      |      _.-&#x27;                             `&#x27;-._        |
+      |   _.-&#x27;                                   `&#x27;-._     |
+      | .&#x27;                                             `.  |
+      ||                                                 | |
+      ||                                                 | |
+      ||                      .-._.-.                    | |
+      ||                    .&#x27;  /   \ `.                 | |
+      ||                   /   /     \   \                | |
+      ||                  ;   ;       ;   ;               | |
+      ||                  |   |       |   |               | |
+      ||                  ;   ;       ;   ;               | |
+      ||                   \   \     /   /                | |
+      ||                    `.  `-._.-&#x27;  .&#x27;               | |
+      ||                      `-.     .-&#x27;                 | |
+      ||                         `-.-&#x27;                    | |
+      ||                          / \                     | |
+      ||                         /   \                    | |
+      ||                        /     \                   | |
+      ||                       /       \                  | |
+      ||                      /         \                 | |
+      ||                     /           \                | |
+      ||                    /             \               | |
+      ||                   /               \              | |
+      ||__________________/_________________\_____________| |</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/okapi/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>//\                                                                   
+         ///\\                                                                  
+        //// \\_                                                                
+       ////    `-.                                                              
+      ////        `-.                                                           
+      |||           `-.                                                         
+      |||             `-.                                                       
+      |||                \                                                      
+      |||                 \__                                                   
+      |||                    `--.._                                             
+      |||                         `---.._                                       
+      |||                               `--.._                                  
+      |||                                    `--.._                             
+      |||                                         `--.._                        
+      |||                                              `--.._                   
+      |||                                                   `--.._              
+      |||                                                        `--.._         
+       \\                                                             `-.       
+        \\                                                              /       
+         \\                  __..---.                                   /        
+          \\            _..-&#x27;        `-.                               /         
+           \\        .-&#x27;                `.                            /          
+            \\     .&#x27;                     \                           /          
+             \\   /        __              \                         /           
+              \\ /      .-&#x27;  `-.            \                       /            
+               /      .&#x27;   __   `.           \                     /             
+              /      /   .&#x27;  `.   \           \                   /              
+             /      /   /      \   \           \__               /               
+            /      /   /        \   \             `-.          _/                
+           /      /   /          \   \              /      __.-&#x27;                 
+          /      /   /            \   \            /   _.-&#x27;                      
+         /______/___/              \___\__________/_.-&#x27;                          
+                /   __..---..__          _..---&#x27;                                
+               /_.-&#x27;            `--------&#x27;                                       
+                 /      _.._          _                                          
+                /     .&#x27;    `.      .&#x27; `-.                                       
+               /     /        \    /     /                                       
+              /     /          \__/     /                                        
+             /_____/                    /                                        
+                  `--------------------&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/okapi/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>.---.
+                                                /     \     .---.
+                                               |   .   \   /     \
+                                               |  / \   \_/   .   |
+                                               | /   \   /   / \  |
+                                               |/     \_/   /   \ |
+                                             .-&#x27;           /     \|
+                                           .&#x27;             /       |
+                                         .&#x27;              /        |
+                                       .&#x27;               /        /
+                                      /                /        /
+                                     (                /        /
+                                      \___           /        /
+                                          \         /        /
+                                           \       /        /
+                                            \     /        /
+                                             \   /   _    /
+                                              \ /  /   \ /
+                                               /   \___//
+                                              /        /
+                                            _/        /          \
+                                          _/         /            \
+                                        _/          /              \
+                                       /           /                \
+                                      /   _.-&#x27;&#x27;&#x27;-./                  \
+                                     /  .&#x27;        \                   \
+                                    /  /           \                   \
+                                   /  /             \                   _
+                                  /  /               \                   \
+                                 /  /                 \                   \
+                               _/  /                   \                   \________________
+                              (___/                     \                   \               \___
+                                                         \___________________\__________________\
+                                                          \_____________________________________/</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/okapi/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>/\       /\
+                                :  \     /  |
+                               /    \   /   |
+                              :      \_/    :
+                             :              |
+                           .&#x27;               |
+                         .&#x27;                 :
+                       .&#x27;                   /
+                     .&#x27;                    /
+                   .&#x27;                     :
+                  /                      /
+                 |                      :
+                 \_                    /
+                   &#x27;--.               :
+                       \              |
+                        :              \
+                        |               \
+                       /                 \
+                      :                   \
+                      |                    \
+                      |                     :
+                       \_                   |
+                         \                  |
+                          :                  \
+                         /                    \
+                       .&#x27;                      \
+                     .&#x27;                         \
+                    /                            :
+                   :                             |
+                    \                             \
+                     \                             :
+                      :                             \
+                     /                               \
+                   .&#x27;                                 \
+                 .&#x27;                                    \
+               .&#x27;                                       :
+              /                                         |
+            .:_______                  __               /
+                     &#x27;&#x27;&#x27;------------&#x27;&#x27;&#x27;  &#x27;&#x27;&#x27;&#x27;.........-&#x27;</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Bicycle</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="bicycle/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                                                      __
+                                                    .&#x27;  `.
+                                                   /      \
+                     o                            /        |
+                      8ooooooooo               __________  |
+                        ``8&#x27;                  /.-------. \ |
+                         |`                   ||      ` ` |&lt;
+                          `|___________________\\      |||| )
+                          / _____________________\ ._._.&#x27;.&#x27;(
+ VK                      / |                     \\ ``--&#x27;
+                        //|`                      \\
+                       //  `|                      \\
+                      //   |`                      . \
+         .d888888b.  //     `|                   .&#x27;.&#x27;\\  .d888888b.
+      o8Y&#x27;   .    `Y//      |`                  / /   \\Y&#x27;    .  .`Y8o
+    oY&#x27;   .  .   . //Y8o     `|               .&#x27;.&#x27;  dY&#x27;\\  .  .     .`Yo
+   dY  .     .    //   Yb    |`              / /   dY.  \\    .    .  .Yb
+  dY .  .  . .  .//   . Yb    `|           .&#x27;.&#x27;   dY   . \\ . . . .     Yb
+ oY.   . .   .  //  .    Yb   |`          / /    oY .    .\\  .  . .   . Yo
+o8    .   .  . // .    .  8b   `| =.=   .&#x27;.&#x27;    o8     .   \\ . .   .     8o
+8Y  .    . . .//__________Y8___|`_____ / /      8P  .     . \\.. .     .  Y8
+8............@/__ ........ 8   .&#x27;.  ..`.&#x27;       8............\@)...........8
+8    .   . (`-.__`--.__   d8  /. . |..  \       8     .  .  . . . .     .  8
+8b    .    .(@   `--.__`--.__|....  .... |      8b.    .   .  .  .   .    d8
+Y8 .    . .  `-._      `--.__|..   @     |      Y8   .  . . . . . . .  .  8Y
+ Yb   .  .   .  .`-._   dP   |.... |.    |       Yb.     .    .    .     dP
+  Yb.   .  . . . .   `-dP     \  . |... /         Yb .  .  .  .  .  .  .dP
+   Yo. .     .    .  .oP `--.__`.__|__.&#x27;           Yo. .      .      ..oP
+    `8o.  .  .  .  .o8&#x27;            |                `8o.  .   .   . .o8&#x27;
+      `Y88booood888P&#x27;             =.=                 `Y88boooood888P&#x27;
+          &quot;&quot;&quot;&quot;&quot;&quot;                                          &quot;&quot;&quot;&quot;&quot;&quot;&quot;
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="bicycle/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A classic road racing bicycle is captured in a stark, minimalist side-profile shot against a pitch-black background, its frame and components outlined in glowing, crisp white light. The bicycle features a traditional diamond-shaped frame composed of a horizontal top tube, a diagonal down tube, and a vertical seat tube, all appearing to be constructed from thin, polished metal tubing. At the top of the seat tube sits a streamlined, low-profile racing saddle mounted on a short seat post. The front fork holds a large spoked wheel, matching the rear wheel in size; both wheels are fitted with thin, high-pressure road tires, with delicate spokes radiating from their central hubs. Curved drop handlebars sweep downward at the front, equipped with integrated brake levers that point forward. At the center of the frame&#x27;s lower junction, a circular chainring and crankset connect via a thin chain to the rear hub. The lighting is direct and high-contrast, casting no shadows and highlighting only the outer edges and structural lines of the bicycle, giving it a sleek, technical appearance as if it were a physical sculpture of pure white light floating in the darkness.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/bicycle/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>.-=================-.                             
+                          .--&#x27;                       &#x27;--.                        
+                      .--&#x27;                               &#x27;--.                    
+                   .-&#x27;                                     &#x27;-.                   
+                 .&#x27;                                           &#x27;.                 
+                /                                               \                
+               /                                                 \               
+              ;                                                   ;              
+              |                                                   |              
+              |                ____                               |              
+              |           _.-&#x27;    &#x27;-._                           |              
+              |        .-&#x27;              &#x27;-.                        |              
+              |      .&#x27;   _..-----.._      &#x27;.                      |              
+              |     /   .&#x27;  .-&quot;&quot;&quot;-.  &#x27;.      \                     |              
+              |    ;   /   /  .-.   \   \      ;                    |              
+              |    |  ;   |  (   )   |   ;     |                    |              
+              |    |  |   |   &#x27;-&#x27; &#x27;-  |   |     |                   |              
+              |    |  ;   |     _     |   ;     |                    |              
+              |    ;   \   \  .-&#x27;-&#x27;-. /   /      ;                   |              
+              |     \   &#x27;.  &#x27;._\   /_.&#x27;  .&#x27;     /                    |              
+              |      &#x27;.   &#x27;-._  &#x27;---&#x27;  _.-&#x27;   .&#x27;                      |              
+              |        &#x27;-._    &#x27;-----&#x27;    _.-&#x27;                        |              
+              |            &#x27;-._________.-&#x27;                            |              
+              |                   ||                                  |              
+              |                   ||                                  |              
+              |                   ||                                  |              
+              |                  /  \                                 |              
+              |                 /____\                                |              
+              |            .---&#x27;      &#x27;---.                           |              
+              |         .-&#x27;                &#x27;-.                        |              
+              |       .-&#x27;      .--------.      &#x27;-.                    |              
+              |      /        .&#x27;  .--.   &#x27;.        \                  |              
+              |     ;        /   /    \    \        ;                 |              
+              |     |       ;   |  ()  |    ;       |                 |              
+              |     |       |   |  /&quot;&quot;\ |    |       |                 |              
+              |     |       ;   |  \__/ |    ;       |                 |              
+              |     ;        \   \      /   /        ;                |              
+              |      \        &#x27;.  &#x27;----&#x27;  .&#x27;        /                 |              
+              |       &#x27;-.        &#x27;-.___.-&#x27;        .-&#x27;                 |              
+              |          &#x27;-.                    .-&#x27;                   |              
+              |             &#x27;---.__________.---&#x27;                      |              
+               \                                                     /               
+                \                                                   /                
+                 &#x27;.                                               .&#x27;                 
+                   &#x27;-._                                       _.-&#x27;                   
+                       &#x27;---._                         _..---&#x27;                      
+                             &#x27;-----------------------&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/bicycle/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>.-&quot;&quot;&quot;&quot;-.                                      .-&quot;&quot;&quot;&quot;-.          
+            .-&quot;&quot;  .--.  &quot;&quot;-.                              .-&quot;&quot;  .--.  &quot;&quot;-.      
+          .&#x27;    .&#x27;    &#x27;.    &#x27;.                          .&#x27;    .&#x27;    &#x27;.    &#x27;.    
+         /    .&#x27;  .--.  &#x27;.    \                        /    .&#x27;  .--.  &#x27;.    \   
+        ;    /   /    \   \    ;                      ;    /   /    \   \    ;  
+        |   ;   ;      ;   ;   |                      |   ;   ;      ;   ;   |  
+        ;   |   |      |   |   ;                      ;   |   |      |   |   ;  
+         \  ;   ;      ;   ;  /                        \  ;   ;      ;   ;  /   
+          &#x27;. \   \    /   / .&#x27;                          &#x27;. \   \    /   / .&#x27;    
+            &#x27;-.\  &#x27;._.&#x27;  /.-&#x27;                              &#x27;-.\  &#x27;._.&#x27;  /.-&#x27;     
+                &#x27;------&#x27;                                      &#x27;------&#x27;           
+                   |\                                              /|             
+                   | \                                            / |             
+                   |  \______________________.-------------------&#x27;  |             
+                   |   \                    /|                      /              
+                   |    \                  / |                     /               
+                   |     \                /  |                    /                
+                   |      \              /   |                   /                 
+                   |       \            /    |                  /                  
+                   |        \          /     |                 /                   
+                   |         \        /      |                /                    
+                   |          \      /       |               /                     
+                   |           \    /        |              /                      
+                   |            \  /         |             /                       
+                   |             \/          |            /                        
+                   |             /\          |           /                         
+                   |            /  \         |          /                          
+                   |           / () \========|=========/==o                        
+                   |          /      \       |       _/  /                        
+                   |         /        \      |    .-&#x27;   /                         
+                   |        /          \     | .-&#x27;    _/                          
+                   |       /            \    |/    .-&#x27;                            
+                   |      /              \   /  .-&#x27;                               
+                   |     /                \_/.-&#x27;                                  
+                   |    /             _..-&quot;&quot;&quot;                                     
+                   |   /      __..--&quot;&quot;                                            
+                   |  /  _.-&quot;&quot;        __----.___                                  
+                   | /.-&#x27;         _.-&quot;  _.._   &quot;-.                                
+                   |/&#x27;         .-&#x27;    .&#x27;_  _&#x27;.   &#x27;.                               
+                              /      / (_)(_) \    \                              
+                             ;      ;    __    ;    ;                             
+                             |      |   /  \   |    |                             
+                             ;      ;   \__/   ;    ;                             
+                              \      \        /    /                              
+                               &#x27;.     &#x27;.___.&#x27;   .&#x27;                               
+                                 &#x27;-._         _.-&#x27;                               
+                                      &#x27;-----&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/bicycle/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>__...---&#x27;                        ____
+                        \___/ |                       /    \
+                              |                     /      (
+                              |=======================/        \
+                            / |                   /  \     /\
+                          /   |                 /     \ ___/
+                        /     |               /        \
+                      /       |             /            \
+       _......._      /           |           /         \ _......._
+     .&#x27;       &#x27;. /              |        /             .\       &#x27;.
+    /           /\             |      /            /   \         \
+   |         /    |             |   /                    |      \        |
+   |       o/     |             | /  _                   |       o        |
+   |        \_______       |  /                     |               |
+    \             / \_______       | /                      \             /
+     &#x27;.       .&#x27;           \_______(O)                      &#x27;.       .&#x27;
+       &#x27;-------&#x27;                   /                          &#x27;-------&#x27;
+                                  /
+                                 _</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/bicycle/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>__...---...__
+                                `--...___...--&#x27;
+                                      | |
+                                      | |                                       _.-.
+                                     ( O )===========================[ O ]===,--.
+                                     /   \                           /    \   \ \     \_
+                                   /     \                         /      \   \ \    |
+                                 /      \                        /        \   \ \__/
+               _.,-=&quot;&quot;&quot;=-.,_   /         \                  /            _\,-=&quot;&quot;&quot;--&#x27;,_
+           .-=&quot;      |      &quot;/-.         \               /          .-=&quot;  \   |      &quot;=-.
+         ./   \      |      //   \.         \           /          ./   \  \   |      /   \.
+        /      \     |    //      \        \         /           /      \  \  |     /      \
+       /        \    |   //        \        \       /            /        \  \ |    /        \
+      |          \   | //           |        \    /             |          \  \|   /          |
+      |           \  | /--------------------/ O \               |           \ \|  /           |
+      |-------------(O)====================( O )               |-------------(O)-------------|
+      |           /  |  --------------------\___/               |           /  |  \           |
+      |          /   |   \          |          O               |          /   |   \          |
+       \        /    |    \        /                           \        /    |    \        /
+        \      /     |     \      /                             \      /     |     \      /
+         `\   /      |      \   /&#x27;                               `\   /      |      \   /&#x27;
+           `-+_      |      _+-`                                   `-+_      |      _+-`
+               `&quot;&quot;-=====-&quot;&quot;`                                           `&quot;&quot;-=====-&quot;&quot;`</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>John F. Kennedy</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="jfk/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>              ..... ..
+          XXXXX:::XXXXXXXXXXXXX
+        XXX:XXXXXXXXXXXXXXXXXXXXXX:
+      XXXXX:XXXXXXX:XXXXXXX:XXXXX::
+     .::IXX::XXXXXX:XXXX::.:&#x27;:XXXX::
+    ..::::XX:XXXXXX:XXXX:&#x27;::&#x27;:XXXXX::
+   ..:::&#x27;X:XXXXXXXX&#x27;:XXXX:XXXXXXXX&#x27;:.
+   ...:X&#x27;.&#x27;XXXXXXXXX.XXXXXXXXXXXX&#x27;XXX:.
+  ....:X.:XXXXXXXXXXXXXXXXXXXXXX:&#x27;XXXX:
+  ....&quot;X.XXXXXXXXXXXXXXXXX&quot;&quot;&quot;&#x27;&#x27; :XXXXXX:
+  ...::&#x27;&quot;&quot;&quot;&#x27;&#x27;&#x27;&#x27;&quot;&#x27;&quot;&quot;&quot;&quot;&#x27;&#x27;&#x27;        :XXXXXX:
+  ....&quot;X.XXXXXXXXXXXXXXXXX&quot;&quot;&quot;&#x27;&#x27; :XXXXXX:
+  ...::&#x27;&quot;&quot;&quot;&#x27;&#x27;&#x27;&#x27;&quot;&#x27;&quot;&quot;&quot;&quot;&#x27;&#x27;&#x27;        :XXXXXX:
+  ..:.:.....                    .:XXXXX:
+  :..::.....                    :&#x27;XXXXX:
+   .:::....                     .:XXXXX
+    ::&#x27;&#x27;&#x27;&#x27;                      .:XXXXX
+    .      ....,,     ......     :XXXXX
+  :::   .::&quot;   XXX  ::&#x27;   &#x27;&#x27;&quot;:   .XXXX:.
+  :.:   :::&quot;MM&#x27;&quot;&quot;X   .:&quot;MM &#x27;.     &quot;X&quot;;.:
+  ::&#x27;     I:..:.:X    .&quot;&#x27;&#x27;.&#x27;      .::&#x27; :
+ ::XI     .    XI                :::  :
+   :XX         XI                .::&quot;&#x27;:
+   :X&#x27; .:.     /X.              .:::  .
+   &quot;&quot;&quot;....    /XXX.:XX.         ...: .
+    &quot;:....    &#x27;&quot;&quot;&quot;&#x27;             ..::.
+     &#x27;:...                      ...:
+      :....  :..:II:II:..:     ...:
+      &#x27;:....  ::.              ..::
+       &#x27;:...   &#x27;&quot;&quot;&quot;&quot;&quot;&#x27;    .    .:::
+      &#x27;:....  ::.              ..::
+       &#x27;:...   &#x27;&quot;&quot;&quot;&quot;&quot;&#x27;    .    .:::
+         .:...               . ..::::&#x27;
+         &#x27;:....            : ..:::XXL:.
+    ...:::X:...         .:::::&#x27;  XXXXXXX
+.:::XXXXXXX::::::......:::::&#x27;   .XXXXXXX
+XXXXXXXXXXX:::::::::::::::&#x27;    .XXXXXXXX
+XXXXXXXXXXX&#x27;::::::::::::&#x27;   .&#x27;.:XXXXXXXX
+XXXXXXXXXXX.&#x27;::::::::::&#x27;  .&#x27;   .XXXXXXXX
+XXXXXXXXXXX   &#x27;:::::::&#x27;. ,&#x27;   .XXXXXXXXX
+XXXXXXXXXXX    &#x27;:::::&#x27;.;     .XXXXXXXXXX
+XXXXXXXXXXX    .&#x27;WWWW.      .XXXXXXXXXXX
+XXXXXXXXXX.   .&#x27;WWWWWW     .XXXXXXXXXXXX
+XXXXXXXXXX,   .:WWWW&quot; &#x27;    .XXXXXXXXXXXX
+XXXXXXXXXX  :  WWW&#x27;       XXXXXXXXXXXXXX
+XXXXXXXXX&#x27; .  WWW&#x27;    .XXXXXXXXXXXXXXXXX
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="jfk/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A stark, high-contrast portrait of a man wearing round glasses, captured from the chest up against a solid black background. The lighting is dramatic and low-key, casting the right half of his face and torso into deep shadow while brightly illuminating his features from the front-left. He has a high, prominent forehead and short, neatly groomed hair that forms a rounded silhouette, reflecting a soft sheen of light on the left side. His slender face is defined by small, circular wire-rimmed spectacles resting on the bridge of his nose, with his eyes partially obscured by the shadows of the lenses. A sharp line of light traces the left side of his straight nose, cheekbone, and jawline, contrasting sharply with the pitch-black shadow bisecting the right side of his face. Below, he wears a dark, structured suit jacket with a visible lapel and collar that opens in a V-neck to reveal a light-colored collared shirt and a dark, patterned tie. The left shoulder of his jacket is outlined by a soft rim of light, while his right shoulder is completely enveloped by the dark background.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/jfk/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>.-&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.
+                         .-&quot;&#x27;           `&quot;-.
+                      .-&#x27;      .-&quot;&quot;&quot;-.      `-.
+                    .&#x27;        /  .-.  \        `.
+                   /         |  ( o )  |         \
+                  /          |    _^_   |          \
+                 ;           |  .-===-.  |           ;
+                 |           | /  o o  \ |           |
+                 |           ||    ^    ||           |
+                 |           ||  .---.  ||           |
+                 |           || /     \ ||           |
+                 |           |  \\_=_//  |           |
+                 ;           |   `---&#x27;   |           ;
+                  \          |  .-----.  |          /
+                   \         | /  _  _ \ |         /
+                    `.       | |  / \/ \ | |       .&#x27;
+                      `-.     | |  \__/  | |     .-&#x27;
+                         `-._ |  \      /  | _.-&#x27;
+                              `|   `----&#x27;   |&#x27;
+                               |            |
+                               |   .----.   |
+                               |  / .--. \  |
+                               | / /    \ \ |
+                               |/ /      \ \|
+                               / /  .--.  \ \
+                              / /  /    \  \ \
+                             /_/__/      \__\_\
+                             \  \  .----.  /  /
+                              \  \/  __  \/  /
+                               \  \_/  \_/  /
+                                \    __    /
+                                 `-._  _.-&#x27;
+                                     / /
+                                    /_/</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/jfk/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>.:-==-.                
+              .-*#%%%%%#*-.             
+            .=#%%%%%%%#####+:           
+           :*%%%%#*+=--:::-=+:          
+          .#%%%#+-.         .::.        
+          =%%%*=.              .        
+         .#%%#-         .:::.           
+         :%%%+        .-+***+-          
+         =%%%:       :*%#=-=#*:         
+         +%%#       .*%%-   .%=         
+         *%%*       :%%%     #+         
+         #%%+       .#%%.   .#.         
+         %%%=        =%%#-.-+*          
+         %%%-         -*%%%%#:          
+         %%%.           .:--.           
+         %%#        .::::::::.          
+         %%*      .-*#%%%%%%#=.         
+         %%+     :*%%%#*++*%%%=         
+         #%=    -#%%#+:   .+%%#         
+         *#-   .#%%#-      :%%%.        
+         ++    =%%%:       .%%%:        
+         :.   .#%%+         #%%-        
+              -%%%:         %%%.        
+              =%%%.        :%%#         
+              +%%%-       .*%%=         
+              *%%%%+-.  .-*%%%:         
+              :#%%%%%####%%%%#-         
+               -#%%%%%%%%%%#=.          
+                .=*#%%%%#*-.            
+                   .::::.               
+                                        
+                                        
+                     .::::              
+                   .+%%%%*.             
+                 .-#%%%%%%+             
+               .-*%%#**#%%#             
+             .-*%%#=.  .#%%+            
+            .+%%%*.    .%%%:            
+            =%%%#.     =%%#             
+           :#%%%=    .+%%%:             
+           .*%%%%#***#%%%#-             
+             -*#%%%%%%#*-.              
+                 .::.</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/jfk/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>.---:::                                        
+                        .::%%####@@                                        
+                     .:%%#####@@@@@                                        
+                   .:%%#####@@@@@@@                                        
+                  :%#####@@@@@@@@@@                                        
+                 :%#####@@@@@@@@@@@                                        
+                :%#####@@@@@@@@@@@@                                        
+               :%#####@@@@@@@@@@@@@                                        
+               %#####@@@@@@@@@@@@@@                                        
+              :%#####@@@@@@@@@@@@@@                                        
+              :%####@@@@@@@@@@@@@@@                                        
+              :%###@@@@@@@@@@@@@@@@                                        
+              :%##@@@@@/---------\                                         
+              :%#@@@@@/  .-----.  \                                        
+              :%@@@@@|  /       \  |                                       
+              :%@@@@@| |   (o)   | |=-                                     
+              :%@@@@@|  \       /  |                                       
+              :%#@@@@@\  `-----&#x27;  /                                        
+              :%##@@@@@\---------/                                         
+              :%###@@@@@@@@@@@@@@#                                         
+              :%####@@@@@@@@@@@@@#                                         
+              :%#####@@@@@@@@@@@@#                                         
+              :%######@@@@@@@@@@@                                          
+              :%#######@@@@@@@@@@---                                       
+              :%########@@@@@@@@@                                          
+              .:%#######@@@@@@@@                                           
+               .:%######@@@@@@@                                            
+                .:%#####@@@@@&#x27;                                             
+                 .:%####@@&#x27;                                                
+                   .:%##@:                                                 
+                     .:%#@@@@:                                             
+                   .::%%##@@@@@@:                                          
+                 .::%%%%##/@@@@@@##%*                                      
+               .::%%%%%##/  @@@@@##%*                                      
+             .::%%%%%%##/   @@@@##%*                                       
+           .::%%%%%%%##/    @@@##%*                                        
+         .::%%%%%%%%##/     @@##%*</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/jfk/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>..::---=======.                 
+          .-=**##%%%%%%%%%%%%%#-.              
+        .-*@@@@@@@@@@@@@@@@@@@@@%+.            
+       =@@@@@@@@@@@@@@@@@@@@@@@@@@%-           
+     .+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@+          
+    .#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.         
+   .*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*         
+   +@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
+  .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
+  -@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
+  =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
+  #@@@@@@@@@@@P&quot;  &quot;Y@@@@@@@@P&quot;   &quot;Y@@@         
+  @@@@@@@@@@P  ....  Y@@@@P        Y@@         
+  @@@@@@@@@P  .%%%%.  Y@@P          Y@         
+  @@@@@@@@@   :%%%%:   @@            @         
+  @@@@@@@@@   :%%%%:   @@                      
+  @@@@@@@@@.  &#x27;%%%%&#x27;  .@@.                     
+  @@@@@@@@@@b. &#x27;&#x27;&#x27;&#x27; .d@@@@.                    
+  @@@@@@@@@@@@bo..od@@@@@@@.                   
+  @@@@@@@@@@@@@@@@@@@@@@@@@@                   
+  @@@@@@@@@@@@~----~@@@@@@@@.                  
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@.                 
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@.                
+   &quot;@@@@@@@@@@@@@@@@@@@@@@@@@@@                
+     @@@@@@@@@@@@@@@@@@@@@@@@@P                
+      &quot;&quot;Y@@@@@@@@@@@@@@@@@@@P&quot;                 
+          @@@@@@@@@@@@@@@@.                    
+         d@@@@@@@@@@@@@@@@.                    
+       .d@@@@@@@@@@@@@@@@@.                    
+      / @@@@@@@@@P&quot;&quot;Y@@@@@                     
+     /  @@@@@@@@P %% Y@@@@                     
+    /  /@@@@@@@P %%%% Y@@@                     
+   /  / @@@@@@P %%%%%% Y@@                     
+  /  /  @@@@@P %%%%%%%% Y@                     
+ /  /   @@@@P %%%%%%%%%% Y                     
+ . /    @@@P %%%%%%%%%%%%                      
+  /     @@P %%%%%%%%%%%%%%</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=card>
+<h2>Princess Diana</h2>
+<div class=chain>
+<div>
+<div class=stage>1 · human-drawn ASCII</div>
+<div class=src><img src="diana/ascii_raster.png"></div>
+<details><summary>characters</summary><pre>                   ___.-----------.___
+               _.-&#x27;                   `-.
+             .&#x27;                          `.
+            /                              \
+           /           `  ._        .       `
+         .&#x27;         )   `   `------&#x27; `---    |
+        |           |    `._  `-----..       |
+        | `         `-  ____.----&#x27; &#x27;   `.   &#x27;|
+        |   .         .&#x27;                 `--&#x27;|
+        |`   `-.  `._/                  .|--&#x27;|
+        | `      -. /   .=====._     .===| _.|
+        |   `   |  &#x27;   &quot; &lt;(@)&gt;  ,  (/(@)&gt;|  /
+        \ `     \               &#x27;  |     |_/
+         \  `    %&gt;                |    |
+          \      |   |      . . .  |    |
+           `._   |       ..&#x27;  `.__.&#x27;   /
+              `-| \      ``---------  /
+               /|  `.      `..___..&#x27; /
+              / `-   `-_     `---&#x27;  /
+            _.    `-.   `-._      .&#x27;
+         _.&#x27;         `-.    `----&#x27;_
+     __.&#x27;               `-._    .&#x27;|
+__.-&#x27;                       `-.&#x27;  |
+                              @   `.
+                              |     `-.
+                              |        `-._
+                              |            `-._
+                              |                `
+                              |
+</pre></details>
+<div class=real><div class=stage>the real subject</div>
+<img src="diana/real-01.jpg"></div>
+</div>
+<div class=right>
+<div><div class=stage>2 · a model describes it (subject name hidden)</div><div class=desc>A high-contrast monochromatic studio portrait captures a young man with a voluminous, styled 1980s quiff haircut looking directly forward with a soft, confident expression. His thick, clean hair is swept upward and back in a rounded, structured shape that frames his face. Dramatic low-key lighting defines his facial structure, casting sharp white highlights along his straight nose, thin arched eyebrows, and wide, expressive eyes with prominent pupils. His lips are set in a subtle, enigmatic smile, and his defined jawline sweeps down to a rounded chin. Below his neck, the collar of his dark jacket or shirt is visible, secured by a single metallic circular button or pendant at the center from which a straight vertical seam descends. The entire figure is rendered in stark, minimalist white outlines that glow against a solid, pitch-black background.</div></div>
+<div><div class=stage>3 · each model redraws ASCII from that description alone</div><div class=redraws>
+<div class=rd><img src="ascii_roundtrip/diana/roundtrip_gpt-5.4-mini.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4-mini</div><details><summary>characters</summary><pre>.-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.
+                  .-&quot;                  &quot;-.
+                .&#x27;    .-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.    &#x27;.
+               /    .&#x27;                &#x27;.    \
+              /    /   .-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.   \    \
+             /    /   /                \   \    \
+            ;    ;   /   .--------.     \   ;    ;
+            |    |  |   /  .----.  \     |  |    |
+            |    |  |  |  / .--. \  |    |  |    |
+            |    |  |  |  | /    \ | |    |  |    |
+            |    |  |  |  | |  () | | |    |  |    |
+            |    |  |  |  | |  __ | | |    |  |    |
+            |    |  |  |  | | /  \| | |    |  |    |
+            |    |  |  |  | | \__/ | | |    |  |    |
+            |    |  |  |  |  \____/  | |    |  |    |
+            |    |  |   \  \        /  /    |  |    |
+            |    |  |    &#x27;._&#x27;------&#x27;._&#x27;     |  |    |
+            |    |   \         __         /   |    |
+            |    |    &#x27;._    .&quot;/  \&quot;.   _.&#x27;    |    |
+            |    |       &#x27;-._/  /\  \_-&#x27;       |    |
+            |    |            \ /  \ /          |    |
+            |    |             /_||_\\          |    |
+            |    |            .- /  \ -.        |    |
+            |    |           /  /|  |\  \       |    |
+            |    |          /__/_|__|_\__\      |    |
+            |    |             /  / \  \        |    |
+            |    |            /__/   \__\       |    |
+            |    |              .-&quot;&quot;&quot;-.         |    |
+            |    |             /  .-.  \        |    |
+            |    |            /  /   \  \       |    |
+            |    |           /__/     \__\      |    |
+            |    |              \  |  /         |    |
+            |    |               \ | /          |    |
+            |    |                \|/           |    |
+            |    |                 |            |    |
+            |    |                / \           |    |
+            |    |               /___\          |    |
+            ;    ;                             ;    ;
+             \    \                           /    /
+              \    &#x27;._                     _.&#x27;    /
+               &#x27;.     &#x27;-.               .-&#x27;     .&#x27;
+                 &#x27;-._      &#x27;-----------&#x27;      _.-&#x27;
+                      &#x27;---._____________.---&#x27;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/diana/roundtrip_gpt-5.4.png"><div class=lbl><span class=pill style="background:#b14ad6"></span>gpt-5.4</div><details><summary>characters</summary><pre>.-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;-.             
+          .-&quot;    .--.    &quot;-.          
+        .&quot;     .&quot;/  \&quot;..    &quot;.        
+       /     .-&quot;  /\  &quot;-.     \       
+      /    .&#x27;    /  \    &quot;.    \      
+     ;    /    _/^^^^\_    \    ;     
+     |   ;   .&quot;/  __  \&quot;.   ;   |     
+     |   |  /  .-&quot;  &quot;-.  \  |   |     
+     |   | ;  /  .--.  \  ; |   |     
+     |   | | ;  /    \  ; | |   |     
+     |   | | | |  __  | | | |   |     
+     |   | | | | /  \ | | | |   |     
+     |   | | | | |  | | | | |   |     
+     |   | | | | |  | | | | |   |     
+     |   | | | | \__/ | | | |   |     
+     |   | | |  \    /  | | |   |     
+     |   | |  \  &quot;==&quot;  /  | |   |     
+     |   |  \   .----.   /  |   |     
+     |   |   &quot;.(  ..  ).&quot;   |   |     
+     |   |     |  --  |     |   |     
+     |   |     | .__. |     |   |     
+     |   ;      \____/      ;   |     
+     |    \       __       /    |     
+     ;     &quot;.    /  \    .&quot;     ;     
+      \      &quot;-._\__/_.-&quot;      /      
+       \         /  \         /       
+        &quot;.      / /\ \      .&quot;        
+          &quot;-.  / /  \ \  .-&quot;          
+             |/ /    \ \|             
+             /_/      \_\             
+              ||  ()  ||              
+              ||      ||              
+              ||      ||              
+              ||      ||              
+              ||      ||              
+              ||      ||              
+              ||      ||              
+              &quot;--____--&quot;</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/diana/roundtrip_gemini-3.5-flash.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.5-flash</div><details><summary>characters</summary><pre>.:::::::::::::::::.
+                      .:::::::::::::::::::::::::.
+                   .:::::::::::::::::::::::::::::::..
+                 .::::::::::::::::::::::::::::::::::::.
+                .::::::::::::::::::::::::::::::::::::::.
+               .::::::::::::::::   :::::::::::::::::::::.
+              .::::::::::::::&#x27;       `::::::::::::::::::::.
+             .::::::::::::&#x27;             `::::::::::::::::::.
+            .:::::::::::&#x27;                 `:::::::::::::::::.
+           .::::::::::&#x27;                     `::::::::::::::::.
+          .:::::::::&#x27;                         `:::::::::::::::.
+         .::::::::&#x27;                             `::::::::::::::.
+        .:::::::&#x27;                                 `:::::::::::::.
+       .::::::&#x27;      _..---.._       _..---.._     `::::::::::::.
+      .::::::&#x27;      /         \     /         \     `::::::::::::.
+     .::::::&#x27;      |   .---.   |   |   .---.   |     `::::::::::::
+    .:::::::       |  / (O) \  |   |  / (O) \  |      ::::::::::::
+    ::::::::       |  \ `---&#x27; /     \ `---&#x27; /  |      ::::::::::::
+    ::::::::        \  `-----&#x27;  | |  `-----&#x27;  /       ::::::::::::
+    ::::::::         `----------| |`----------&#x27;        ::::::::::::
+    ::::::::                    | |                  ::::::::::::
+    ::::::::                    | |                  ::::::::::::
+    .:::::::                    / \                  :::::::::::
+     .::::::.                  (_____)               .::::::::::
+      .::::::.                                       .::::::::::
+       .::::::.                &#x27;-.__.-&#x27;              .::::::::::
+        .:::::::.             \        /             .::::::::::
+         .::::::::.            `------&#x27;            .:::::::::::
+           .::::::::.                          .::::::::::::
+             .::::::::.                      .::::::::::::
+               `::::::::.                  .::::::::::::&#x27;
+                 `::::::::.              .::::::::::::&#x27;
+                    `:::::::.          .:::::::::::&#x27;
+                        `::::|        |::::&#x27;
+                             |   ||   |
+                            /    ||    \
+                           / === || === \
+                          /      ()      \
+                         /       ||       \
+                        /        ||        \</pre></details></div>
+<div class=rd><img src="ascii_roundtrip/diana/roundtrip_gemini-3.1-pro-preview.png"><div class=lbl><span class=pill style="background:#1fae7a"></span>gemini-3.1-pro-preview</div><details><summary>characters</summary><pre>_..-----.._              
+              _.-&quot;           &quot;-._          
+            .&#x27;                   `.        
+           /                       \       
+          /                         \      
+         |                           |     
+         |                           |     
+         |                           |     
+          \                         /      
+           `-._                 _.-&#x27;       
+             .-&quot;`&quot;&quot;---------&quot;&quot;`&quot;-.         
+           _ |   .-&quot;-.   .-&quot;-.   | _       
+          / \|  / (o) \ / (o) \  |/ \      
+         |   |  \_____/|\_____/  |   |     
+          \ /\         |         /\ /      
+           `  \        |        /  `       
+             \       _|_       /           
+              \     &#x27;---&#x27;     /            
+               `.   \___/   .&#x27;             
+                 `-..___..-&#x27;               
+                     | |                   
+                 _.-&#x27; O `-._               
+               .&#x27;  /  |  \  `.             
+              /   /   |   \   \            
+             |   /    |    \   |           
+             |  |     |     |  |           
+            /   |     |     |   \          
+           |    |     |     |    |</pre></details></div>
+</div></div>
+</div>
+</div></div>
+<div class=foot>9 subjects · describer gemini-3.5-flash · redrawers gpt-5.4-mini, gpt-5.4, gemini-3.5-flash, gemini-3.1-pro-preview · the original drawing is never shown to the redrawers. Other views: <a href="index.html">the bridge demo</a> · <a href="https://github.com/tinycrops/ascii-bridge">source</a>.</div>
